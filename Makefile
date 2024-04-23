@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/04/23 14:54:44 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/04/23 16:06:12 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ nginx:
 	cd $(NGINX_DIR) && docker build -t nginx-img ./
 
 nginx-run: nginx
-	@cd $(NGINX_DIR) && docker run -it --name nginx-cont -p 80:80 nginx-img;
+	@cd $(NGINX_DIR) && docker run -d --name nginx-cont -p 80:80 nginx-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep nginx-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* nginx is running$(W)"; \
 	else \

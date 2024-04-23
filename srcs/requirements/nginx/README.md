@@ -18,10 +18,18 @@ Transport Layer Security is the successor of SSL (Secure Socket Layer) is a secu
 - /usr/local/nginx/conf
 - /usr/local/etc/nginx
 
+*_Context_*: delimited by curly brackets `{...}`. By nesting them, configurations can be inherited.
+- _main_: it's a kind of global scope. Common use: number of workers, file to save the main nginx pid, error file.
+- _events_: connection handling at a general level.
+- _HTTP_: used for web-serv or rev-proxy. It's a sibiling of events context.
+- _server_: nested in HTTP, can be declared multiple times. The type of this context determines which algorithm is choosen by nginx to handle request.
+- _location_: nested in server contexts, and in themselves. Used to define endpoints.
 
+*_Directive_*: the context is made of rule, the directives. They can be used only in the context that they were designed for, otherwise an error is returned.
 
 ## Terminology
-_Daemon process_: a process which runs in the background.
+_Daemon process_: a process which runs in the background.  
+_Load balancing_: the process to make efficient the distribution of tasks, given the resources (like a big amount of requests directed to a group of server).s  
 
 ## Reference
 `nginx -s [stop/quit/reload/reopen]`
@@ -29,3 +37,7 @@ _Daemon process_: a process which runs in the background.
 
 `service nginx status`
 `systemctl status nginx`
+
+## Useful resources
+[Bginx crash course](https://www.youtube.com/watch?v=7VAI73roXaY&t=686s) I used to learn the basics.
+[Round-robin algorithm](https://en.wikipedia.org/wiki/Round-robin_scheduling), the defualt used to proxy the traffic to servers.  

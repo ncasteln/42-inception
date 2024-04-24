@@ -10,7 +10,7 @@ COPY index.html /var/www/html/
 COPY index_colored.html /var/www/html/
 
 # openssl
-COPY tools/generate_ssl.sh /etc/tools/
+COPY tools/generate_ssl_cert.sh /etc/tools/
 RUN /etc/tools/generate_ssl_cert.sh
 
 # check the config file

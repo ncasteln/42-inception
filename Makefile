@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/04/24 15:07:52 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/04/24 16:04:58 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,14 @@ all: nginx mariadb
 
 debian:
 	cd ./srcs/requirements/debian && docker build -t debian-img ./
-	docker run -it --name debian-cont debian-img
+	docker run -it --name debian-cont -p 3306:3306 debian-img
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
 	cd $(NGINX_DIR) && docker build -t nginx-img ./
 
 nginx-run: nginx
-	@cd $(NGINX_DIR) && docker run  --name nginx-cont -p 443:443 nginx-img;
+	@cd $(NGINX_DIR) && docker run -d --name nginx-cont -p 443:443 nginx-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep nginx-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* nginx is running$(W)"; \
 	else \

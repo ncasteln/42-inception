@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/04/24 16:04:58 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/04/25 11:15:21 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ all: nginx mariadb
 
 debian:
 	cd ./srcs/requirements/debian && docker build -t debian-img ./
-	docker run -it --name debian-cont -p 3306:3306 debian-img
+	docker run \
+		--interactive \
+		--tty \
+		--name debian-cont -p 3306:3306 debian-img
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -72,7 +75,15 @@ clean-img: clean
 		echo "$(R)* No images to remove$(W)"; \
 	fi
 
-fclean: clean-img
+clean-vol:
+	@if [ $$(docker volume list | wc -l) -gt 1 ]; then \
+		docker volume rm $$(docker volume list -q --filter dangling=true);\
+		echo "$(G)* All volumes removed$(W)"; \
+	else \
+		echo "$(R)* No voluems to remove$(W)"; \
+	fi
+
+fclean: clean-img clean-vol
 
 re: clean-img clean all
 
@@ -96,4 +107,4 @@ R	=	\033[0;31m
 W	=	\033[0m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run
+.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol

@@ -96,6 +96,12 @@ _--rm_ it will ne removed after stop
 `use [context-name]` 
 The default context is the one that is 'called' when we use docker commands.
 
+#### Docker context
+If you start a container with a volume that doesn't yet exist, Docker creates the volume automatically.
+`docker volume create [name]`
+`docker volume ls`
+`docker volume rm [name]`
+`docker volume inspect [name]`
 
 ____________________________________________________________________________________
 _Tests for the project_

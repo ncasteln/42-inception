@@ -46,13 +46,45 @@ A best practice is that each container should do one thing. So if we need to run
 _Docker networks_  
 They are virtal networks which allows Dockerfiles to communicate with each other. There are different type of networks, like Bridge, Host, Overlay and Macvlan. See [this video](https://www.youtube.com/watch?v=bKFMS5C4CG0) for more info about Docker networks.  
 
-_Docker volumes_  
-It is a persistent storage location used to store the data of a container, even after its deletion, and shareable with other ones. There are two types, the Bind mount and Named volume.
-
-## Data management
-_Volumes_: special directories inside the filesystem accessible by the container, directly managed by Docker.  
+## Docker volumes
+_Volumes_: special directories inside the filesystem accessible by multiple containers and directly managed by Docker.  
 _Bind mounts_: links a directory of the filesystem to the container.  
 _tmpfs_: temporary and not-persistent data.
+
+Ways to mount volumes:
+`--volume [vol-name or host path]:[container-destination]`  
+
+`--mount type=[bind,volume,tmpfs],src=[vol-name or host path],dst=[container-destination]`  
+Additionally we can add other flags like `readonly` and `bind-propagation`.  
+
+The only difference between the two is that _--volume_ will create the directory if doesn't exist, while _--mount_ won't do it.
+
+Try to see:
+```docker
+# create a volume and check it
+docker volume create my-vol
+docker volume inspect my-vol
+
+# run a new nginx container and create three files in my-vol
+# docker run --name first-nginx --mount type=volume,src=my-vol,dst=/etc/hello --detach nginx:latest
+docker run --name first-nginx --volume my-vol:/etc/hello --detach nginx:latest
+docker exec first-nginx touch /etc/hello/world-1 /etc/hello/world-2 /etc/hello/world-3
+
+# run a new nginx container and check if the file are there
+# docker run --name second-nginx --mount type=volume,src=my-vol,dst=/etc/hello --detach nginx:latest
+docker run --name second-nginx --volume my-vol:/etc/hello --detach nginx:latest
+docker exec first-nginx ls -la /etc/hello
+
+# you can additionally stop the two nginx and delete them, and create another container to check if the data created before persists
+```
+
+## PID1
+Check (this page)[https://cloud.google.com/architecture/best-practices-for-building-containers] and (this)[https://www.padok.fr/en/blog/docker-processes-container]to get more informatino about what is PID1 and good practice to handle it. Maybe you'll also want to check https://github.com/krallin/tini.  
+
+*PID1*, also know as *init*, is the very first UNIX process. In case of zombie ps, means ps which child-ps not waited from their parent-ps, they are usually adopted by _init_ and cleaned properly. 
+
+## CMD vs ENTRYPOINT
+The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile].
 ___
 ___
 ___

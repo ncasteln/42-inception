@@ -3,8 +3,8 @@
 mariaDB is a fork of MySql, open-source relational database management system. While _relational_ db are structured in rown and columns, the _non-relational_ organize the data in docs, collections, graphs, in a more flexible and complex structure. Check (pros and cons)[https://www.hostinger.com/tutorials/mariadb-vs-mysql] of mariaDB and MySql.
 
 ## Basics
+To install use `apt-get install mariadb-server`. About the configuration you can read more on the (official docs)[https://mariadb.com/kb/en/understanding-mariadb-architecture/#configuration].
 
-## Configuration files
 Configuration files can be found in:  
 - /etc/mysql/my.cnf
 - /etc/mysql/conf.d/
@@ -22,7 +22,8 @@ mysqld --verbose --help | grep -A 1 'Default option'
 
 # Check the rules that are set by the read of the above mentioned file
 mysqld --print-defaults
-```
+```  
+
 
 
 ## Useful links
@@ -32,3 +33,6 @@ mariadb (configurations)[https://mariadb.com/kb/en/configuring-mariadb-with-opti
 https://stackoverflow.com/questions/24270733/automate-mysql-secure-installation-with-echo-command-via-a-shell-script
 https://stackoverflow.com/questions/64883580/wsl-cant-connect-to-local-mysql-server-through-socket-var-run-mysqld-mysqld
 https://docs.bitnami.com/virtual-machine/infrastructure/nginx/administration/connect-remotely-mariadb/
+
+https://gist.github.com/Mins/4602864
+https://www.devguide.at/wp-content/uploads/2021/01/osdc_cheatsheet-mariadb.pdf

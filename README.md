@@ -1,6 +1,6 @@
 # 42-inception
 ## Steps
-The following are the general step to follow for the project. The approach I use is to learn first the basics of Docker and then create each container separately in the order that I wrote them.
+The following are the general step to follow for the project. The approach I use is to learn first the basics of Docker and then create each Dockerfile for each container separately.
 
 ### 0 - Docker  
 _Theory_

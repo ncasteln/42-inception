@@ -6,13 +6,13 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/04/25 11:15:21 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/04/26 15:53:35 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NGINX_DIR	=	./srcs/requirements/nginx
-
 MARIADB_DIR	=	./srcs/requirements/mariadb
+WP_DIR		=	./srcs/requirements/wordpress
 
 NULL		= 	>/dev/null
 
@@ -23,7 +23,9 @@ debian:
 	docker run \
 		--interactive \
 		--tty \
-		--name debian-cont -p 3306:3306 debian-img
+		--name debian-cont \
+		--publish 3306:3306 \
+		debian-img
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -42,12 +44,15 @@ mariadb:
 	@cd $(MARIADB_DIR) && docker build -t mariadb-img ./
 
 mariadb-run: mariadb
-	@cd $(MARIADB_DIR) && docker run -d --name mariadb-cont mariadb-img;
+	@docker volume create db
+	@cd $(MARIADB_DIR) && docker run --init -d --name mariadb-cont --mount type=volume,src=db,dst=/var/lib/mysql mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
 	else \
 		echo "$(R)* mariadb exited$(W)"; \
 	fi
+
+# ------------------------------------------------------------------- WORDPRESS
 
 # ----------------------------------------------------------------------- CLEAN
 # -q flag, suppress the header when listing
@@ -59,7 +64,7 @@ stop:
 		echo "$(R)* Nothing to stop$(W)"; \
 	fi
 
-clean: stop
+clean:
 	@if [ $$(docker ps -aq | wc -l) -ge 1 ]; then \
 		docker rm $$(docker ps -aq); \
 		echo "$(G)* All containers removed$(W)"; \
@@ -67,7 +72,7 @@ clean: stop
 		echo "$(R)* No containers to remove$(W)"; \
 	fi
 
-clean-img: clean
+clean-img:
 	@if [ $$(docker images -aq | wc -l) -ge 1 ]; then \
 		docker rmi -f $$(docker images -aq); \
 		echo "$(G)* All images removed$(W)"; \
@@ -83,9 +88,9 @@ clean-vol:
 		echo "$(R)* No voluems to remove$(W)"; \
 	fi
 
-fclean: clean-img clean-vol
+fclean: stop clean clean-img clean-vol
 
-re: clean-img clean all
+re: fclean all
 
 # ----------------------------------------------------------------------- UTILS
 display:
@@ -107,4 +112,4 @@ R	=	\033[0;31m
 W	=	\033[0m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol
+.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol wp wp-run

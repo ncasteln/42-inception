@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/02 11:03:50 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/02 16:36:31 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ mariadb:
 
 mariadb-run: mariadb
 	@docker volume create db
-	@cd $(MARIADB_DIR) && docker run --init -d --name mariadb-cont --mount type=volume,src=db,dst=/var/lib/mysql mariadb-img;
+	@cd $(MARIADB_DIR) && docker run --init -d --name mariadb-cont mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
 	else \

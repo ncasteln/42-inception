@@ -1,12 +1,12 @@
 FROM debian:bullseye
 
-RUN apt-get update -y && apt-get install -y nginx
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install nginx -y
 
 # replace default cnofig file
 COPY conf/custom.conf /etc/nginx/nginx.conf
 
 # remove whe wordpress will be added
-COPY index.html /var/www/html/
 COPY index_colored.html /var/www/html/
 
 # openssl

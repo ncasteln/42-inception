@@ -18,9 +18,16 @@ And _/etc/mysql/my.cnf_ will include the followings:
 - !includedir /etc/mysql/conf.d/ which includes two small conf (mysql.cnf and mysqldump.cnf)
 - !includedir /etc/mysql/mariadb.conf.d/ which includes more files (50-server.cnf etc.)
 
-https://www.mysqltutorial.org/mysql-administration/
+## Basic Dockerfile
+This procedure is the very first understanding to build the Dockerfile. A lot of things could be not ready, this is just a first step.
+1) Create a new *my.cnf* file which holds port and socket. Port is just uncommented, socket is changed to `/var/lib/mysql`, discovered that is the default for mariadb.
+2) Create a new *50-server.cn* file in which _init_file_ is added, pid-file changed to `/var/lib/mysql/msqld.pid`.
+3) Create *init.sql* file, which is the file used by _init_file_ in the file mentioned in the previous point, which initialize a new database.
+4) Build the image, run the container in --detach mode and verify the status.
+
 
 ## Useful links
+https://www.mysqltutorial.org/mysql-administration/
 (mysql_secure_installation) raw file [https://github.com/twitter-forks/mysql/blob/master/scripts/mysql_secure_installation.sh]  
 mariadb (configurations)[https://mariadb.com/kb/en/configuring-mariadb-with-option-files/] options
 

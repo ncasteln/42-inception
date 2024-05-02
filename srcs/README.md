@@ -10,14 +10,11 @@ _Portability_: the main goal of both, is decrease the difficulty to develop appl
 
 ### Differences
 _Virtualization_  
-In general it means creating a virtual, fictional, emulated environment. A VM is built on the top of the Hypervisor and has its own OS. A Docker container is built and runs on the top of an already existing shared and _*same*_ OS.
-
+In general it means creating a virtual, fictional, emulated environment. A VM is built on the top of the Hypervisor and has its own OS. A Docker container is built and runs on the top of an already existing shared and _*same*_ OS.  
 _Size and performances_  
-Since Docker containers are lightweight and run on top of our OS, are faster than a VM.
-
+Since Docker containers are lightweight and run on top of our OS, are faster than a VM.  
 _Security_  
-The Docker container has the same vulnerabilities of the host OS. The VM has it's own security layers.
-
+The Docker container has the same vulnerabilities of the host OS. The VM has it's own security layers.  
 _Replicability_  
 Docker is easier to replicate, especially when we face up with multiple applications and therefore multiple instances.
 
@@ -53,7 +50,6 @@ _tmpfs_: temporary and not-persistent data.
 
 Ways to mount volumes:
 `--volume [vol-name or host path]:[container-destination]`  
-
 `--mount type=[bind,volume,tmpfs],src=[vol-name or host path],dst=[container-destination]`  
 Additionally we can add other flags like `readonly` and `bind-propagation`.  
 
@@ -79,12 +75,18 @@ docker exec first-nginx ls -la /etc/hello
 ```
 
 ## PID1
-Check (this page)[https://cloud.google.com/architecture/best-practices-for-building-containers] and (this)[https://www.padok.fr/en/blog/docker-processes-container]to get more informatino about what is PID1 and good practice to handle it. Maybe you'll also want to check https://github.com/krallin/tini.  
+*Resources about PID1*:
+https://www.padok.fr/en/blog/docker-processes-container
+https://cloud.google.com/architecture/best-practices-for-building-containers
+https://hasgeek.com/rootconf/2017/sub/what-should-be-pid-1-in-a-container-JQ6nkBv13XeZzR6zAiFsip
+https://github.com/krallin/tini
 
 *PID1*, also know as *init*, is the very first UNIX process. In case of zombie ps, means ps which child-ps not waited from their parent-ps, they are usually adopted by _init_ and cleaned properly. 
 
 ## CMD vs ENTRYPOINT
-The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile].
+The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile]. Basically they set a default command to be ecexuted when a container staerts, with the following differences:
+- `CMD`: can be overridden by specifying a command or args when running a container.
+- `ENTRYPOINT`: meant to be a fixed command, but still overwriteable with `--entrypoint` flag.
 ___
 ___
 ___

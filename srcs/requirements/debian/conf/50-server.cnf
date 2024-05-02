@@ -1,36 +1,12 @@
-#
-# These groups are read by MariaDB server.
-# Use it for options that only the server (but not clients) should see
-
-# this is read by the standalone daemon and embedded servers
 [server]
-init_file = /etc/mysql/init.sql
+init_file               = /etc/mysql/init.sql
 
-# this is only for the mysqld standalone daemon
 [mysqld]
-
-#
-# * Basic Settings
-#
-
-############# OLD ###############
-# user                    = mysql
-# pid-file                = /run/mysqld/mysqld.pid
-# basedir                 = /usr
-# datadir                 = /var/lib/mysql
-# tmpdir                  = /tmp
-# lc-messages-dir         = /usr/share/mysql
-# lc-messages             = en_US
-# skip-external-locking
-#################################
 user                    = root
 pid-file                = /run/mysqld/mysqld.pid
 basedir                 = /usr
 datadir                 = /var/lib/mysql
 tmpdir                  = /tmp
-lc-messages-dir         = /usr/share/mysql
-lc-messages             = en_US
-skip-external-locking
 
 # Broken reverse DNS slows down connections considerably and name resolve is
 # safe to skip if there are no "host by domain name" access grants
@@ -38,12 +14,9 @@ skip-external-locking
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-#bind-address            = 127.0.0.1
+# bind-address            = 127.0.0.1
 
-#
-# * Fine Tuning
-#
-
+####### FINE TUNING ########
 #key_buffer_size        = 128M
 #max_allowed_packet     = 1G
 #thread_stack           = 192K
@@ -54,9 +27,11 @@ skip-external-locking
 #max_connections        = 100
 #table_cache            = 64
 
-#
-# * Logging and Replication
-#
+##### LOGGING AND REPLICATION ######
+# Note: The configured log file or its directory need to be created
+# and be writable by the mysql user, e.g.:
+# $ sudo mkdir -m 2750 /var/log/mysql
+# $ sudo chown mysql /var/log/mysql
 
 # Both location gets rotated by the cronjob.
 # Be aware that this log type is a performance killer.
@@ -70,11 +45,11 @@ skip-external-locking
 # Enable this if you want to have error logging into a separate file
 #log_error = /var/log/mysql/error.log
 # Enable the slow query log to see queries with especially long duration
-#slow_query_log_file    = /var/log/mysql/mariadb-slow.log
-#long_query_time        = 10
+#log_slow_query_file    = /var/log/mysql/mariadb-slow.log
+#log_slow_query_time    = 10
 #log_slow_verbosity     = query_plan,explain
 #log-queries-not-using-indexes
-#min_examined_row_limit = 1000
+#log_slow_min_examined_row_limit = 1000
 
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
@@ -122,7 +97,7 @@ collation-server      = utf8mb4_general_ci
 # you can put MariaDB-only options here
 [mariadb]
 
-# This group is only read by MariaDB-10.5 servers.
+# This group is only read by MariaDB-10.11 servers.
 # If you use the same .cnf file for MariaDB of different versions,
 # use this group for options that older servers don't understand
-[mariadb-10.5]
+[mariadb-10.11]

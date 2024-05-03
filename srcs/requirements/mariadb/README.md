@@ -25,6 +25,11 @@ This procedure is the very first understanding to build the Dockerfile. A lot of
 3) Create *init.sql* file, which is the file used by _init_file_ in the file mentioned in the previous point, which initialize a new database.
 4) Build the image, run the container in --detach mode and verify the status.
 
+## To do
+- Make the configuration easier using just ONE file and not two like I do, otherwise it is hard to remember what, where, how
+- Run the server-container and then run a client-container, from which connect to the server and verify the information (init.sql worked?)
+- Once ensured that the DB works, decide on how to perform the next steps...connect to wp? set php-fpm? or what the fuck ?!?!?!?!?!
+
 
 ## Useful links
 https://www.mysqltutorial.org/mysql-administration/

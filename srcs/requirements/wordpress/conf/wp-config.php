@@ -18,7 +18,7 @@
  * @package WordPress
  */
 
-
+// NOTE: added WPSITEURL and WPHOME
 define('WPSITEURL','http://localhost:9000/');
 define('WPHOME','http://localhost:9000/');
 

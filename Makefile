@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/02 16:36:31 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/03 12:09:15 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,6 @@ mariadb:
 	@cd $(MARIADB_DIR) && docker build -t mariadb-img ./
 
 mariadb-run: mariadb
-	@docker volume create db
 	@cd $(MARIADB_DIR) && docker run --init -d --name mariadb-cont mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
@@ -53,6 +52,16 @@ mariadb-run: mariadb
 	fi
 
 # ------------------------------------------------------------------- WORDPRESS
+wp:
+	@cd $(WP_DIR) && docker build -t wp-img ./
+
+wp-run: wp
+	@cd $(MARIADB_DIR) && docker run --init -it --name wp-cont -p 9000:9000 wp-img;
+	@if [ $$(docker ps -a --filter "status=running" | grep wp-cont | wc -l) -ne 0 ]; then \
+		echo "$(G)* wp is running$(W)"; \
+	else \
+		echo "$(R)* wp exited$(W)"; \
+	fi
 
 # ----------------------------------------------------------------------- CLEAN
 # -q flag, suppress the header when listing

@@ -1,11 +1,17 @@
 FROM debian:bullseye
 
-RUN apt-get update -y
+RUN apt-get update -y && apt-get upgrade -y
 
-RUN ./tools/install_wp.sh
+# worpress install
+COPY tools/install_wp.sh /install_wp.sh
+RUN ./install_wp.sh
 
-# install wget and wordpress
-# RUN apt-get install wget -y
-# RUN wget https://wordpress.org/latest.tar.gz
-# RUN tar -xzvf latest.tar.gz
-# needs
+# copy of the config file
+# TO DO: add randomized values https://api.wordpress.org/secret-key/1.1/salt/
+COPY conf/wp-config.php /var/www/wordpress/
+
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install nginx -y
+
+# replace default cnofig file
+COPY conf/custom.conf /etc/nginx/nginx.conf

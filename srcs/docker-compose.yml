@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 443:443
+    depends_on:
+      - wordpress
 
   wordpress:
     build:
@@ -12,6 +14,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - 9000
+    depends_on:
+      - mariadb
 
   mariadb:
     build:

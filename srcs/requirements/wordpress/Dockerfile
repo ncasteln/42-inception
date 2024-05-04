@@ -10,4 +10,4 @@ RUN apt-get update -y && apt-get upgrade -y
 COPY tools/install_wp.sh /install_wp.sh
 RUN ./install_wp.sh
 
-# EXPOSE 9000
+EXPOSE 9000

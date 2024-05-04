@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/03 16:08:19 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/04 16:52:22 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ nginx:
 	cd $(NGINX_DIR) && docker build -t nginx-img ./
 
 nginx-run: nginx
-	@cd $(NGINX_DIR) && docker run -d --name nginx-cont -p 443:443 nginx-img;
+	@cd $(NGINX_DIR) && docker run --detach --name nginx-cont -p 443:443 nginx-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep nginx-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* nginx is running$(W)"; \
 	else \
@@ -44,7 +44,7 @@ mariadb:
 	@cd $(MARIADB_DIR) && docker build -t mariadb-img ./
 
 mariadb-run: mariadb
-	@cd $(MARIADB_DIR) && docker run --init -d --name mariadb-cont mariadb-img;
+	@cd $(MARIADB_DIR) && docker run --init --detach --name mariadb-cont mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
 	else \
@@ -99,6 +99,9 @@ clean-vol:
 
 fclean: stop clean clean-img clean-vol
 
+hclean: fclean
+	@docker builder prune
+
 re: fclean all
 
 # ----------------------------------------------------------------------- UTILS
@@ -121,4 +124,4 @@ R	=	\033[0;31m
 W	=	\033[0m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol wp wp-run
+.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol wp wp-run hclean

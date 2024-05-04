@@ -3,3 +3,5 @@ CREATE DATABASE mydatabase;
 CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword';
 GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+-- SELECT User FROM user;

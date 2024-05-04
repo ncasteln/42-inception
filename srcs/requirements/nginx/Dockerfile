@@ -7,7 +7,7 @@ RUN apt-get install nginx -y
 COPY conf/custom.conf /etc/nginx/nginx.conf
 
 # remove whe wordpress will be added
-COPY index_colored.html /var/www/html/
+COPY index.html /var/www/html/
 
 # openssl
 COPY tools/generate_ssl_cert.sh /etc/tools/
@@ -16,6 +16,6 @@ RUN /etc/tools/generate_ssl_cert.sh
 # check the config file
 RUN nginx -t
 
-EXPOSE 443
+# EXPOSE 443
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

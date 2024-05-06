@@ -4,7 +4,7 @@ WP_PATH='/var/www/html/mysite/public_html/'
 
 # basic dependencies
 apt-get install wget -y
-apt-get install php7.4-fpm -y
+apt-get install php7.4-fpm -y # also php7.4?
 
 # download wp_cli and set it to be used smartly
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

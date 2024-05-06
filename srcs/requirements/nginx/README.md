@@ -18,6 +18,13 @@ Jobs:
 - Trust validation between client-server. Basically the server asks to the requesting computer to identify itself, and after this the data will be exchanged.  
 - Connection encryption. The server owns a public key which is shared with anyone who wants to connect, and a private one, used to encrypt/decrypt the message (see asymmetric encryption).  
 
+## URI & URL $ URN
+*URI* (Uniform Resources Identifier): identifier for any type of resource, not only on internet.  
+_Examples_: urn:isbn:978-3-16-148410-0, mailto:info@example.com", tel:+1-212-555-1212
+*URL* (Uniform Resources Locator): specific type of URI used to locate resources on internet.
+_Examples_: https://www.example.com/index.html, ftp://ftp.example.com/files/document.pdf
+*URN* (Uniform Resources Name): persistent and location-indipendent identifier.  
+
 ## Configuration file
 *nginx.conf* location:
 - /etc/nginx/nginx.conf (usually here)

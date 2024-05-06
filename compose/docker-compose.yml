@@ -1,0 +1,46 @@
+# https://bobcares.com/blog/docker-compose-nginx-php-fpm-mysql-wordpress/
+
+services:
+  nginx:
+    depends_on:
+      - wordpress
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d # substitute the default config
+      - ./wordpress:/var/www/html # vol-name:container-location
+    ports:
+      - '8080:80'
+    networks:
+      - nginx-wp-net
+    # restart: always
+
+  wordpress:
+    depends_on:
+      - mariadb
+    image: wordpress:4.7.1-php7.0-fpm
+    expose:
+      - '9000'
+    volumes:
+      - ./wordpress:/var/www/html
+    env_file:
+      - ../secrets/wordpress/.env
+    networks:
+      - nginx-wp-net
+      - mariadb-wp-net
+    # restart: always
+
+  mariadb:
+    image: mariadb
+    expose:
+      - '3306'
+    volumes:
+      - ./db-data:/var/lib/mysql
+    env_file:
+      - ../secrets/mariadb/.env
+    networks:
+      - mariadb-wp-net
+    # restart: always
+
+networks:
+  nginx-wp-net:
+  mariadb-wp-net:

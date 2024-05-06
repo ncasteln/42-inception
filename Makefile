@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/04 16:56:38 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/06 14:36:28 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,7 @@ stop:
 		docker stop $$(docker ps -aq); \
 		echo "$(G)* Containers stopped$(W)"; \
 	else \
-		echo "$(R)* Nothing to stop$(W)"; \
+		echo "$(N)* Nothing to stop$(W)"; \
 	fi
 
 clean:
@@ -78,7 +78,7 @@ clean:
 		docker rm $$(docker ps -aq); \
 		echo "$(G)* All containers removed$(W)"; \
 	else \
-		echo "$(R)* No containers to remove$(W)"; \
+		echo "$(N)* No containers to remove$(W)"; \
 	fi
 
 clean-img:
@@ -86,42 +86,53 @@ clean-img:
 		docker rmi -f $$(docker images -aq); \
 		echo "$(G)* All images removed$(W)"; \
 	else \
-		echo "$(R)* No images to remove$(W)"; \
+		echo "$(N)* No images to remove$(W)"; \
 	fi
 
-clean-vol:
-	@if [ $$(docker volume list | wc -l) -gt 1 ]; then \
-		docker volume rm $$(docker volume list -q --filter dangling=true);\
-		echo "$(G)* All volumes removed$(W)"; \
-	else \
-		echo "$(R)* No voluems to remove$(W)"; \
-	fi
-
-fclean: stop clean clean-img clean-vol
+fclean: stop clean clean-img
+	@docker volume prune
+	@docker network prune
+	@docker builder prune
 
 hclean: fclean
-	@docker builder prune
 
 re: fclean all
 
 # ----------------------------------------------------------------------- UTILS
 display:
+	@echo "$(B)------------------------ IMAGES ------------------------$(W)";
 	@if [ $$(docker images -aq | wc -l) -ge 1 ]; then \
 		docker images -a; \
 	else \
-		echo "$(B)* No images to display$(W)"; \
+		echo "$(N)* No images to display$(W)"; \
 	fi
-	@echo $(SEP);
+
+	@echo "$(B)---------------------- CONTAINERS ----------------------$(W)";
 	@if [ $$(docker ps -aq | wc -l) -ge 1 ]; then \
 		docker ps -a; \
 	else \
-		echo "$(B)* No containers to display$(W)"; \
+		echo "$(N)* No containers to display$(W)"; \
+	fi
+
+	@echo "$(B)------------------------ VOLUMES -----------------------$(W)";
+	@if [ $$(docker volume list | wc -l) -gt 1 ]; then \
+		docker volume list; \
+	else \
+		echo "$(N)* No volumes to display$(W)"; \
+	fi
+
+	@echo "$(B)------------------------ NETWORKS ----------------------$(W)";
+	@if [ $$(docker network list | wc -l) -gt 1 ]; then \
+		docker network list; \
+	else \
+		echo "$(N)* No networks to display$(W)"; \
 	fi
 
 G	=	\033[0;32m
 B	=	\033[0;34m
 R	=	\033[0;31m
 W	=	\033[0m
+N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run clean-vol wp wp-run hclean
+.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run  wp wp-run hclean

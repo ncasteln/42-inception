@@ -6,6 +6,7 @@ To learn docker compose I first tried to compose the architecture required by th
 - Move the variables into `.env` files, using `env_file` directive in docker-compose instead of `environment`.
 
 ## TO UNDERSTAND
+-------- before everything: make data not persistent otherwise it is problematic (TON OF FILES)
 -------- restart: always --- why should I use it ?
 -------- tiny and init thing?
 

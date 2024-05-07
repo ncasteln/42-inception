@@ -1,25 +1,50 @@
+
 services:
   nginx:
-    build:
-      context: ./requirements/nginx
-      dockerfile: Dockerfile
+    container_name: nginx
+    build: ./requirements/nginx
+    # depends_on:
+    #   - wordpress
+    # volumes:
+      # - ./nginx:/etc/nginx/conf.d # substitute the default config
+      # - wp-nginx-vol:/var/www/html
     ports:
-      - 443:443
-    depends_on:
-      - wordpress
+      - '8080:80'
+    # networks:
+    #   - nginx-wp-net
+    restart: always
 
-  wordpress:
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    expose:
-      - 9000
-    depends_on:
-      - mariadb
+  # wordpress:
+  #   depends_on:
+  #     - mariadb
+  #   image: wordpress:4.7.1-php7.0-fpm
+  #   expose:
+  #     - '9000'
+  #   volumes:
+  #     - wp-nginx-vol:/var/www/html
+  #   env_file:
+  #     - ../secrets/wordpress/.env
+  #   restart: always
+  #   networks:
+  #     - nginx-wp-net
+  #     - wp-mariadb-net
 
-  mariadb:
-    build:
-      context: ./requirements/mariadb
-      dockerfile: Dockerfile
-    expose:
-      - 3306
+  # mariadb:
+  #   image: mariadb
+  #   expose:
+  #     - '3306'
+  #   volumes:
+  #     - db-data:/var/lib/mysql
+  #   env_file:
+  #     - ../secrets/mariadb/.env
+  #   restart: always
+  #   networks:
+  #     - wp-mariadb-net
+
+volumes:
+  wp-nginx-vol:
+  db-data:
+
+networks:
+  nginx-wp-net:
+  wp-mariadb-net:

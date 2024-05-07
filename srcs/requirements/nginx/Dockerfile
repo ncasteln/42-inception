@@ -4,10 +4,7 @@ RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install nginx -y
 
 # replace default cnofig file
-COPY conf/custom.conf /etc/nginx/nginx.conf
-
-# remove whe wordpress will be added
-COPY index.html /var/www/html/
+COPY conf/default.conf /etc/nginx/conf.d
 
 # openssl
 COPY tools/generate_ssl_cert.sh /etc/tools/
@@ -17,5 +14,7 @@ RUN /etc/tools/generate_ssl_cert.sh
 RUN nginx -t
 
 # EXPOSE 443
+
+ENV IS_MY_NGINX=YES
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]

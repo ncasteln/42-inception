@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/07 08:58:32 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/07 10:28:25 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ clean-net:
 	fi
 
 fclean: stop clean clean-img clean-vol clean-net
-	@docker builder prune
+# @docker builder prune
 
 pclean: stop #prompt clean
 	@docker container prune

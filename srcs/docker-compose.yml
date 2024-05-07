@@ -1,49 +1,49 @@
-
 services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
-    # depends_on:
-    #   - wordpress
-    # volumes:
-      # - ./nginx:/etc/nginx/conf.d # substitute the default config
-      # - wp-nginx-vol:/var/www/html
+    depends_on:
+      - wordpress
+    volumes:
+      - wp-nginx-vol:/var/www/html
     ports:
       - '8080:80'
-    # networks:
-    #   - nginx-wp-net
+    networks:
+      - nginx-wp-net
     restart: always
 
-  # wordpress:
-  #   depends_on:
-  #     - mariadb
-  #   image: wordpress:4.7.1-php7.0-fpm
-  #   expose:
-  #     - '9000'
-  #   volumes:
-  #     - wp-nginx-vol:/var/www/html
-  #   env_file:
-  #     - ../secrets/wordpress/.env
-  #   restart: always
-  #   networks:
-  #     - nginx-wp-net
-  #     - wp-mariadb-net
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    image: wordpress:4.7.1-php7.0-fpm
+    expose:
+      - '9000'
+    volumes:
+      - wp-nginx-vol:/var/www/html
+    env_file:
+      - ../secrets/wordpress/.env
+    networks:
+      - nginx-wp-net
+      - wp-mariadb-net
+    restart: always
 
-  # mariadb:
-  #   image: mariadb
-  #   expose:
-  #     - '3306'
-  #   volumes:
-  #     - db-data:/var/lib/mysql
-  #   env_file:
-  #     - ../secrets/mariadb/.env
-  #   restart: always
-  #   networks:
-  #     - wp-mariadb-net
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    expose:
+      - '3306'
+    volumes:
+      - db-data:/var/lib/mysql
+    env_file:
+      - ../secrets/mariadb/.env
+    networks:
+      - wp-mariadb-net
+    restart: always
 
 volumes:
-  wp-nginx-vol:
-  db-data:
+  wp-nginx-vol: # need to be in /home/ncasteln/data
+  db-data: # need to be in /home/ncasteln/data
 
 networks:
   nginx-wp-net:

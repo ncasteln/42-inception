@@ -27,9 +27,10 @@ _Examples_: https://www.example.com/index.html, ftp://ftp.example.com/files/docu
 
 ## Configuration file
 *nginx.conf* location:
-- /etc/nginx/nginx.conf (usually here)
-- /usr/local/nginx/conf
-- /usr/local/etc/nginx
+- _/etc/nginx/nginx.conf_: contains the _http_ and _events_ context, which are inside the _main_ context. Inside _http_ we will place the _server_ blocks, in which take place one or more _location_ blocks. Let's note that at the end of the _http_ block inside this conf file the are those statements, which will be inside the _http_ scope:
+	- _include /etc/nginx/conf.d/*.conf;_
+	- _include /etc/nginx/sites-enabled/*;_
+Because of this, we will have to change the whole _nginx.conf_ because it also hold SSL settings, which the subject require to be set in a certain way.
 
 *_Context_*: delimited by curly brackets `{...}`. By nesting them, configurations can be inherited.
 *_Directive_*: the context is made of rule, the directives. They can be used only in the context that they were designed for, otherwise an error is returned.
@@ -57,3 +58,7 @@ _Sockets_: strategy for communication between client-server. It can be defined a
 [Bginx crash course](https://www.youtube.com/watch?v=7VAI73roXaY&t=686s) I used to learn the basics.
 [Round-robin algorithm](https://en.wikipedia.org/wiki/Round-robin_scheduling), the defualt used to proxy the traffic to servers.  
 [Useful cheatsheet](https://github.com/christianlempa/cheat-sheets)
+Nginx Configuration with [FastCGI and PHP-fpm](https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/). 
+
+[sites-enabled & sites-available](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) folders.
+Check also [this answer](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) in case of doubt.

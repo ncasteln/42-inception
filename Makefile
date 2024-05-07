@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/06 14:36:28 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/07 08:58:32 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,51 +64,69 @@ wp-run: wp
 	fi
 
 # ----------------------------------------------------------------------- CLEAN
-# -q flag, suppress the header when listing
 stop:
-	@if [ $$(docker ps -aq --filter "status=running" | wc -l) -ge 1 ]; then \
-		docker stop $$(docker ps -aq); \
+	@if [ $$(docker ps -a --quiet --filter "status=running" | wc -l) -ge 1 ]; then \
+		docker stop $$(docker ps -a --quiet); \
 		echo "$(G)* Containers stopped$(W)"; \
 	else \
 		echo "$(N)* Nothing to stop$(W)"; \
 	fi
 
 clean:
-	@if [ $$(docker ps -aq | wc -l) -ge 1 ]; then \
-		docker rm $$(docker ps -aq); \
+	@if [ $$(docker ps -a --quiet | wc -l) -ge 1 ]; then \
+		docker rm $$(docker ps -a --quiet); \
 		echo "$(G)* All containers removed$(W)"; \
 	else \
 		echo "$(N)* No containers to remove$(W)"; \
 	fi
 
 clean-img:
-	@if [ $$(docker images -aq | wc -l) -ge 1 ]; then \
-		docker rmi -f $$(docker images -aq); \
+	@if [ $$(docker images -a --quiet | wc -l) -ge 1 ]; then \
+		docker rmi -f $$(docker images -a --quiet); \
 		echo "$(G)* All images removed$(W)"; \
 	else \
 		echo "$(N)* No images to remove$(W)"; \
 	fi
 
-fclean: stop clean clean-img
+clean-vol:
+	@if [ $$(docker volume ls --quiet | wc -l) -ge 1 ]; then \
+		docker volume rm $$(docker volume ls --quiet); \
+		echo "$(G)* All volumes removed$(W)"; \
+	else \
+		echo "$(N)* No volumes to remove$(W)"; \
+	fi
+
+clean-net:
+	@if [ $$(docker network ls --quiet | wc -l) -gt 3 ]; then \
+		docker network rm $$(docker network ls --quiet); \
+		echo "$(G)* All custom networks removed$(W)"; \
+	else \
+		echo "$(N)* No custom networks to remove$(W)"; \
+	fi
+
+fclean: stop clean clean-img clean-vol clean-net
+	@docker builder prune
+
+pclean: stop #prompt clean
+	@docker container prune
+	@docker image prune
 	@docker volume prune
 	@docker network prune
 	@docker builder prune
-
-hclean: fclean
 
 re: fclean all
 
 # ----------------------------------------------------------------------- UTILS
 display:
 	@echo "$(B)------------------------ IMAGES ------------------------$(W)";
-	@if [ $$(docker images -aq | wc -l) -ge 1 ]; then \
+	@if [ $$(docker images -a --quiet | wc -l) -ge 1 ]; then \
 		docker images -a; \
 	else \
 		echo "$(N)* No images to display$(W)"; \
 	fi
 
 	@echo "$(B)---------------------- CONTAINERS ----------------------$(W)";
-	@if [ $$(docker ps -aq | wc -l) -ge 1 ]; then \
+	@if [ $$(docker ps -a --quiet | wc -l) -ge 1 ]; then \
 		docker ps -a; \
 	else \
 		echo "$(N)* No containers to display$(W)"; \
@@ -135,4 +153,5 @@ W	=	\033[0m
 N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display mariadb mariadb-run  wp wp-run hclean
+.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display \
+mariadb mariadb-run  wp wp-run hclean clean-net clean-vol pclean

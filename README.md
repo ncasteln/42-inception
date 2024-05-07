@@ -5,8 +5,11 @@ To learn docker compose I first tried to compose the architecture required by th
 - Change `ports` to `expose` (see [port vs expose](#port-vs-expose)).
 - Move the variables into `.env` files, using `env_file` directive in docker-compose instead of `environment`.
 
+## Hot to test if everything is set up
+A simple but redundant (because of browser, cache, automatic add of https) way of testing is accessing `http` or `https` at `localhost:8080`. Another smart way is using _curl_ in the command line with `curl -I localhost:8080`, but really pay attention to the output.
+
 ## TO UNDERSTAND
--------- before everything: make data not persistent otherwise it is problematic (TON OF FILES)
+-------- before everything: make data not persistent otherwise it is problematic (TON OF FILESc)
 -------- restart: always --- why should I use it ?
 -------- tiny and init thing?
 

@@ -7,40 +7,89 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx:/etc/nginx/conf.d # substitute the default config
-      - ./wordpress:/var/www/html # vol-name:container-location
+      - wp-nginx-vol:/var/www/html
     ports:
       - '8080:80'
-    networks:
-      - nginx-wp-net
-    # restart: always
+    restart: always
 
   wordpress:
     depends_on:
       - mariadb
     image: wordpress:4.7.1-php7.0-fpm
-    expose:
-      - '9000'
+    ports:
+      - '9000:9000'
     volumes:
-      - ./wordpress:/var/www/html
-    env_file:
-      - ../secrets/wordpress/.env
-    networks:
-      - nginx-wp-net
-      - mariadb-wp-net
-    # restart: always
+      - wp-nginx-vol:/var/www/html
+    environment:
+      WORDPRESS_DB_USER: myuser
+      WORDPRESS_DB_NAME: mydatabase
+      WORDPRESS_DB_TABLE_PREFIX: wp_
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_PASSWORD: mydatabasepassword
+    restart: always
 
   mariadb:
     image: mariadb
-    expose:
-      - '3306'
-    volumes:
-      - ./db-data:/var/lib/mysql
-    env_file:
-      - ../secrets/mariadb/.env
-    networks:
-      - mariadb-wp-net
-    # restart: always
+    ports:
+      - '3306:3306'
+    # volumes:
+    #   - db-data:/var/lib/mysql
+    environment:
+      MYSQL_USER: myuser
+      MYSQL_DATABASE: mydatabase
+      MYSQL_PASSWORD: mydatabasepassword
+      MYSQL_ROOT_PASSWORD: myrootpassword
+    restart: always
 
-networks:
-  nginx-wp-net:
-  mariadb-wp-net:
+volumes:
+  wp-nginx-vol:
+
+
+# services:
+#   nginx:
+#     depends_on:
+#       - wordpress
+#     image: nginx:latest
+#     volumes:
+#       - ./nginx:/etc/nginx/conf.d # substitute the default config
+#       - wp-data:/var/www/html
+#     ports:
+#       - '8080:80'
+# #     networks:
+# #       - nginx-wp-net
+#     restart: always
+
+#   wordpress:
+#     depends_on:
+#       - mariadb
+#     image: wordpress:4.7.1-php7.0-fpm
+#     expose:
+#       - '9000'
+#     volumes:
+#       - wp-data:/var/www/html
+#     env_file:
+#       - ../secrets/wordpress/.env
+# #     networks:
+# #       - nginx-wp-net
+#       - mariadb-wp-net
+#     restart: always
+
+#   mariadb:
+#     image: mariadb
+#     expose:
+#       - '3306'
+#     volumes:
+#       - db-data:/var/lib/mysql
+#     env_file:
+#       - ../secrets/mariadb/.env
+# #     networks:
+# #       - mariadb-wp-net
+#     restart: always
+
+# volumes:
+#   db-data:
+#   wp-data:
+
+# # networks:
+# #   nginx-wp-net:
+#   mariadb-wp-net:

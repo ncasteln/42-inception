@@ -62,3 +62,6 @@ Nginx Configuration with [FastCGI and PHP-fpm](https://www.nginx.com/resources/w
 
 [sites-enabled & sites-available](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) folders.
 Check also [this answer](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) in case of doubt.
+
+
+[Non-profit SSL certificate](https://letsencrypt.org/) to enable https.

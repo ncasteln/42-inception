@@ -8,11 +8,6 @@ To learn docker compose I first tried to compose the architecture required by th
 ## Hot to test if everything is set up
 A simple but redundant (because of browser, cache, automatic add of https) way of testing is accessing `http` or `https` at `localhost:8080`. Another smart way is using _curl_ in the command line with `curl -I localhost:8080`, but really pay attention to the output. Try another test: exchange `expose` and `port` in wordpress and mariadb, and try to _curl_ them.
 
-## TO UNDERSTAND
--------- before everything: make data not persistent otherwise it is problematic (TON OF FILESc)
--------- restart: always --- why should I use it ?
--------- tiny and init thing is still needed?
-
 ## port vs expose
 Check (here)[https://stackoverflow.com/questions/40801772/what-is-the-difference-between-ports-and-expose-in-docker-compose] the difference between the two statements and how to verify it.
 

@@ -1,3 +1,9 @@
+# inception
+
+## Useful commands
+- `ps aux`
+- `curl -I [host]:[port]`
+
 # docker compose
 
 To learn docker compose I first tried to compose the architecture required by the subject, using the official docker image for each required service. I follow the built explained in (this tutorial)[https://bobcares.com/blog/docker-compose-nginx-php-fpm-mysql-wordpress/] and I played around it, making some adjustments and changing some paramteres. These are some tests and changes that I tried:

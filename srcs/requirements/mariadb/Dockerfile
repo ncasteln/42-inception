@@ -1,10 +1,5 @@
 FROM debian:bullseye
 
-ENV MYSQL_ROOT_PASSWORD=myrootpassword
-ENV MYSQL_DATABASE=mydatabase
-ENV MYSQL_USER=myuser
-ENV MYSQL_PASSWORD=mypassword
-
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install mariadb-server -y
 
@@ -17,9 +12,7 @@ RUN mv /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-serv
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
 # copy file to initialize a custom database (init_file)
-# necessary to start the service
+# necessary to start the service alternative to mariadb_install_tables or something similar
 COPY conf/init.sql /etc/mysql/init.sql
-
-EXPOSE 3306
 
 ENTRYPOINT [ "mariadbd" ]

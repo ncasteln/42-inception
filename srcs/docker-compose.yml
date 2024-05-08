@@ -30,11 +30,11 @@ services:
 
   mariadb:
     container_name: mariadb
-    image: mariadb
+    build: ./requirements/mariadb
     expose:
       - '3306'
-    volumes:
-      - db-data:/var/lib/mysql
+    # volumes:
+    #  - db-data:/var/lib/mysql
     env_file:
       - ../secrets/mariadb/.env
     networks:

@@ -38,16 +38,18 @@ mariadbd --verbose --help | grep -A 1 'Default option'
 mariadbd --print-defaults
 ```  
 
-## TO DO TO DO TO DO !!!
-ALL THE DIRECT FOLLOWINGS ARE RELATED TO USER ADMINISTRATION
-- rule user = mysql what does?
-- What happens to root? -- can access without password --  
-- Is it enough the init.sql file?
+## Quick reference
+# show users
+- `mariadb -e '[mariadb-instruction]'` the instructions can be chained into long scripts like the following
+- `mariadb -e 'use mydatabase; SHOW TABLES; SHOW COLUMNS IN wp_users; SELECT display_name FROM wp_users;'`
 
-- How use secrets?
+
+
 
 ## Useful links
+(Configuration of mysql)[https://dev.mysql.com/doc/refman/8.0/en/option-files.html] using option files.
 (Configuration rules explained)[https://mariadb.com/kb/en/server-system-variables/#socket].
+
 Good general tutorial for (mysql)[https://www.mysqltutorial.org/mysql-administration/] and (mariadb)[https://www.mariadbtutorial.com/]
 
 (mysql_secure_installation) raw file [https://github.com/twitter-forks/mysql/blob/master/scripts/mysql_secure_installation.sh]  

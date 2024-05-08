@@ -16,7 +16,8 @@ init_file               = /etc/mysql/init.sql
 # NOTE: changed pid-file location, added port
 user                    = mysql
 port                    = 3306
-socket                  = /var/lib/mysql/mysqld.sock
+#socket                  = /var/lib/mysql/mysqld.sock
+#socket                  = /run/mysqld/mysqld.sock
 pid-file                = /var/lib/mysql/mysqld.pid
 basedir                 = /usr
 datadir                 = /var/lib/mysql

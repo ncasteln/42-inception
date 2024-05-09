@@ -3,16 +3,13 @@ FROM debian:bullseye
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install mariadb-server -y
 
-# replacing my.cnf file
-RUN mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
-COPY conf/my.cnf /etc/mysql/my.cnf
-
-# replacing 50-server.cnf file - the last rules overwrite the first
-RUN mv /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf.bak
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY conf/custom.cnf /etc/mysql/mariadb.conf.d/
 
 # copy file to initialize a custom database (init_file)
 # necessary to start the service alternative to mariadb_install_tables or something similar
 COPY conf/init.sql /etc/mysql/init.sql
+
+# COPY tools/init_mariadb.sh /init_mariadb.sh
+# RUN ./init_mariadb.sh
 
 ENTRYPOINT [ "mariadbd" ]

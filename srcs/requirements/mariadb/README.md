@@ -10,6 +10,9 @@ Run a mariadb-server container and then a client using docker hub images.
 - `docker run -it --rm --name=mariadb-client --network mariadb-network mariadb:latest mariadb -u root -h mariadb-server -p`
 
 ## Configuration
+https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+https://mariadb.com/kb/en/configuring-mariadb-with-option-files/#option-groups
+
 In _/etc/mysql/my.cnf_ we read the order in which the files and the rules are processed. What is done:
 - Create an _init.sql_ which initializes a custom database (necessary!).
 - Copy a custom _50-server.cnf_: under [mysqld] add _port_ and _socket_ rules, change _bind_address_ to 0.0.0.0. Under [server] add _init_file_.

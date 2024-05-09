@@ -1,0 +1,19 @@
+# Port or socket location where to connect
+########
+# NOTE # ==== leaving here the socket make possible to access from host machine
+#      #      if not left here, is not possible to understand if mariadb is updated when creating a user
+#      #
+########
+[client-server]
+# replace default /run/mysqld/mysqld.sock
+socket                  = /var/lib/mysql/mysqld.sock
+port                    = 3306
+
+# this is read by the standalone daemon and embedded servers
+[server]
+init_file               = /etc/mysql/init.sql
+
+# this is only for the mysqld standalone daemon
+[mysqld]
+pid-file                = /var/lib/mysql/mysqld.pid
+bind-address            = 0.0.0.0

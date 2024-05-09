@@ -2,74 +2,68 @@
 /**
  * The base configuration for WordPress
  *
- * The wp-config.php creation script uses this file during the installation.
- * You don't have to use the website, you can copy this file to "wp-config.php"
- * and fill in the values.
+ * The wp-config.php creation script uses this file during the
+ * installation. You don't have to use the web site, you can
+ * copy this file to "wp-config.php" and fill in the values.
  *
  * This file contains the following configurations:
  *
- * * Database settings
+ * * MySQL settings
  * * Secret keys
  * * Database table prefix
  * * ABSPATH
  *
- * @link https://wordpress.org/documentation/article/editing-wp-config-php/
+ * @link https://codex.wordpress.org/Editing_wp-config.php
  *
  * @package WordPress
  */
 
-// NOTE: added WPSITEURL and WPHOME
-define('WPSITEURL','http://localhost:9000/');
-define('WPHOME','http://localhost:9000/');
-
-// ** Database settings - You can get this info from your web host ** //
+// ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'mydatabase' );
+define('DB_NAME', 'wp_database');
 
-/** Database username */
-define( 'DB_USER', 'myuser' );
+/** MySQL database username */
+define('DB_USER', 'myuser');
 
-/** Database password */
-define( 'DB_PASSWORD', 'mypassword' );
+/** MySQL database password */
+define('DB_PASSWORD', 'mypassword');
 
-/** Database hostname */
-define( 'DB_HOST', 'mariadb:3306' );
+/** MySQL hostname */
+define('DB_HOST', 'mariadb:3306');
 
-/** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
 
-/** The database collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
 
 /**#@+
- * Authentication unique keys and salts.
+ * Authentication Unique Keys and Salts.
  *
- * Change these to different unique phrases! You can generate these using
- * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
- *
- * You can change these at any point in time to invalidate all existing cookies.
- * This will force all users to have to log in again.
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'mykey' );
-define( 'SECURE_AUTH_KEY',  'mykey' );
-define( 'LOGGED_IN_KEY',    'mykey' );
-define( 'NONCE_KEY',        'mykey' );
-define( 'AUTH_SALT',        'mysalt' );
-define( 'SECURE_AUTH_SALT', 'mysalt' );
-define( 'LOGGED_IN_SALT',   'mysalt' );
-define( 'NONCE_SALT',       'mysalt' );
+define('AUTH_KEY',         '912d954627c09377096dd8ae9d9c3fff974614bd');
+define('SECURE_AUTH_KEY',  '65e19fd8fa49395086dcb3268e7d4c10d7f9ea94');
+define('LOGGED_IN_KEY',    '8df78cb53b5795ddd40e005d004745d376d12f29');
+define('NONCE_KEY',        '6dbf676ac5206901a47a2af212ca72da7a866e79');
+define('AUTH_SALT',        'd13c379570a3a6512f7d659a338444aaf4b4d800');
+define('SECURE_AUTH_SALT', 'f09b3cd223d4cdae3a3e3d7e54282335a90b97b5');
+define('LOGGED_IN_SALT',   '4878614c68ddd2e55fe64bd167c84fb73c023aa9');
+define('NONCE_SALT',       'a7a0483869da6ad6d81e31102d89754c07aa60c0');
 
 /**#@-*/
 
 /**
- * WordPress database table prefix.
+ * WordPress Database Table prefix.
  *
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix = 'wp_';
+$table_prefix  = 'wp_';
 
 /**
  * For developers: WordPress debugging mode.
@@ -79,22 +73,23 @@ $table_prefix = 'wp_';
  * in their development environments.
  *
  * For information on other constants that can be used for debugging,
- * visit the documentation.
+ * visit the Codex.
  *
- * @link https://wordpress.org/documentation/article/debugging-in-wordpress/
+ * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-define( 'WP_DEBUG', false );
+define('WP_DEBUG', false);
 
-/* Add any custom values between this line and the "stop editing" line. */
-
-
-
-/* That's all, stop editing! Happy publishing. */
-
-/** Absolute path to the WordPress directory. */
-if ( ! defined( 'ABSPATH' ) ) {
-        define( 'ABSPATH', __DIR__ . '/' );
+// If we're behind a proxy server and using HTTPS, we need to alert Wordpress of that fact
+// see also http://codex.wordpress.org/Administration_Over_SSL#Using_a_Reverse_Proxy
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+ $_SERVER['HTTPS'] = 'on';
 }
 
+/* That's all, stop editing! Happy blogging. */
+
+/** Absolute path to the WordPress directory. */
+if ( !defined('ABSPATH') )
+ define('ABSPATH', dirname(__FILE__) . '/');
+
 /** Sets up WordPress vars and included files. */
-require_once ABSPATH . 'wp-settings.php';
+require_once(ABSPATH . 'wp-settings.php');

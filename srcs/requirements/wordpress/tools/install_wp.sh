@@ -1,10 +1,10 @@
 #!/bin/bash
 
-WP_PATH='/var/www/html/mysite/public_html/'
-
+echo "I ran here"
 # basic dependencies
 apt-get install wget -y
-apt-get install php7.4-fpm -y # also php7.4?
+apt-get install php-fpm -y # also php7.4?
+apt-get install php-mysqli -y
 
 # download wp_cli and set it to be used smartly
 wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -12,32 +12,28 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # set the root folder for the website & download WP there
-mkdir -p $WP_PATH
-chown -R root:root $WP_PATH
-wp core download --allow-root --path="${WP_PATH}"
+mkdir -p /var/www/html/ncasteln.42.fr/public_html/
+chown -R root:root /var/www/ # html/ncasteln.42.fr/public_html/
+cd /var/www/html/ncasteln.42.fr/public_html/ && wp core download --allow-root #--path=/var/www/html/ncasteln.42.fr/public_html/
 
 # from those step a database is needed
-# install a fake db to make run the installation
-# apt-get install mariadb-server -y
-# service mariadb start;
-# sleep 3;
-# mysql -u root -p -e <<MYSQL_SCRIPT
-# CREATE DATABASE IF NOT EXISTS mydatabase;
-# CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword';
-# GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%' WITH GRANT OPTION;
-# FLUSH PRIVILEGES;
-# MYSQL_SCRIPT
-
-# required
-apt-get install php-mysql -y
-
 # wp-config.php creation
-# wp config create --allow-root \
-# 	--dbname='mydatabase' \
-# 	--dbuser='myuser' \
-# 	--dbpass='mypassword' \
-# 	--dbhost='localhost' \
-# 	--dbprefix='wp_' \
-# 	--path="${WP_PATH}/"
+# cd /var/www/html/ncasteln.42.fr/public_html/ && wp config create --dbname="${WORDPRESS_DB_NAME}" --dbuser="${WORDPRESS_DB_USER}" --dbpass="${WORDPRESS_DB_PASSWORD}" --dbhost="${WORDPRESS_DB_HOST}" --path=/var/www/html/ncasteln.42.fr/public_html/ --allow-root
+# cd /var/www/html/ncasteln.42.fr/public_html/ && wp config create --allow-root \
+# 	--dbname="${WORDPRESS_DB_NAME}" \
+# 	--dbuser="${WORDPRESS_DB_USER}" \
+# 	--dbpass="${WORDPRESS_DB_PASSWORD}" \
+# 	--dbhost="${WORDPRESS_DB_HOST}" \
+# 	--path=/var/www/html/ncasteln.42.fr/public_html/
 
-# wp core install --allow-root
+# cd /var/www/html/ncasteln.42.fr/public_html/ && wp core install --allow-root --url=https://localhost --title=localhost --admin_user=admin --admin_password=admin --admin_email=admin@admin.admin --path='/var/www/html/ncasteln.42.fr/public_html/'
+# cd /var/www/html/ncasteln.42.fr/public_html/ && wp core install --allow-root \
+# 	--url=localhost \
+# 	--title=localhost \
+# 	--admin_user=admin \
+# 	--admin_password=admin \
+# 	--admin_email=admin@admin.admin \
+# 	--path='/var/www/html/ncasteln.42.fr/public_html/'
+
+# doesnt wait for mariadb how can do it ?
+# https://github.com/MariaDB/mariadb-docker/blob/master/healthcheck.sh

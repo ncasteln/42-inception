@@ -6,6 +6,9 @@
 Official (php manual)[https://www.php.net/manual/en/install.fpm.configuration.php] for configuration  
 Configure (php-fpm)[https://www.digitalocean.com/community/tutorials/php-fpm-nginx]  
 
+# configuration file
+- `find . -name php` usually it'll be in /etc/php/7.4/fpm
+- 
 
 
 ## Others

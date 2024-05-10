@@ -12,4 +12,6 @@ COPY conf/init.sql /etc/mysql/init.sql
 # COPY tools/init_mariadb.sh /init_mariadb.sh
 # RUN ./init_mariadb.sh
 
+# ENTRYPOINT [ "mysqld_safe" ]
+# ENTRYPOINT [ "mariadbd-safe" ]
 ENTRYPOINT [ "mariadbd" ]

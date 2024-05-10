@@ -4,7 +4,6 @@ services:
     build: ./requirements/nginx
     depends_on:
       - wordpress
-      - mariadb
     volumes:
       - wp-nginx-vol:/var/www/html
     ports:
@@ -14,10 +13,10 @@ services:
     restart: always
 
   wordpress:
+    init: true
     container_name: wordpress
-    image: wordpress:4.7.1-php7.0-fpm
-    #image: wordpress:6.5.3-php8.1-fpm
-    # build: ./requirements/wordpress
+    # image: wordpress:4.7.1-php7.0-fpm
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
     expose:
@@ -32,6 +31,7 @@ services:
     restart: always
 
   mariadb:
+    init: true
     container_name: mariadb
     build: ./requirements/mariadb
     expose:
@@ -44,20 +44,20 @@ services:
       - wp-mariadb-net
     restart: always
 
-  # phpmyadmin:
-  #   container_name: phpmyadmin
-  #   image: phpmyadmin/phpmyadmin
-  #   depends_on:
-  #     - mariadb
-  #   ports:
-  #     - "8081:80"
-  #   environment:
-  #     PMA_HOST: mariadb
-  #     MYSQL_ROOT_PASSWORD: myrootpassword
-  #   networks:
-  #     - nginx-wp-net
-  #     - wp-mariadb-net
-  #   restart: always
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mariadb
+    ports:
+      - "8085:80"
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: myrootpassword
+    networks:
+      - nginx-wp-net
+      - wp-mariadb-net
+    restart: always
 
 volumes:
   wp-nginx-vol: # need to be in /home/ncasteln/data

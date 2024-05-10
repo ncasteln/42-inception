@@ -3,6 +3,7 @@
 CREATE DATABASE wp_database;
 CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword';
 GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%' WITH GRANT OPTION;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '12345';
 FLUSH PRIVILEGES;
 
 CREATE DATABASE myanimalsdb;

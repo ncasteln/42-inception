@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/09 14:54:55 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/10 12:18:36 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,15 +17,6 @@ WP_DIR		=	./srcs/requirements/wordpress
 NULL		= 	>/dev/null
 
 all: nginx mariadb
-
-debian:
-	cd ./srcs/requirements/debian && docker build -t debian-img ./
-	docker run \
-		--interactive \
-		--tty \
-		--name debian-cont \
-		--publish 3306:3306 \
-		debian-img
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -153,5 +144,5 @@ W	=	\033[0m
 N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all debian nginx nginx-run stop clean clean-img fclean re display \
+.PHONY: all nginx nginx-run stop clean clean-img fclean re display \
 mariadb mariadb-run  wp wp-run hclean clean-net clean-vol pclean

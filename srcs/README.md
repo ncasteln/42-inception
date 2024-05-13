@@ -84,9 +84,16 @@ https://github.com/krallin/tini
 *PID1*, also know as *init*, is the very first UNIX process. In case of zombie ps, means ps which child-ps not waited from their parent-ps, they are usually adopted by _init_ and cleaned properly. 
 
 ## CMD vs ENTRYPOINT
-The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile]. Basically they set a default command to be ecexuted when a container staerts, with the following differences:
-- `CMD`: can be overridden by specifying a command or args when running a container.
+The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile]. Basically they set a default command to be ecexuted when a container start, with the following differences:
+- `CMD`: can be overridden by specifying a command or args when specified by running a container.
 - `ENTRYPOINT`: meant to be a fixed command, but still overwriteable with `--entrypoint` flag.
+- If used together, `CMD` will be the optional argument for `ENTRYPOINT`  
+In the following example, _docker-entrypoint.sh_ is set to be run at startap, bringing _/usr/sbin/php-fpm7.4 --nodaemonize_ as arguments. In this case, `CMD` can be overwritten by docker run when needed.
+```docker
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "/usr/sbin/php-fpm7.4", "--nodaemonize" ]
+```
+An alternative to this approach would be placing _/usr/sbin/php-fpm7.4 --nodaemonize_ inside the script. In that case it would not be overwriteable.
 ___
 ___
 ___

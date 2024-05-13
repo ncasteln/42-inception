@@ -7,6 +7,7 @@
 2) Docker compose
 	- init: true need to be used? Why the services don't wait some second when stopped?
 	- restart: always
+	- need to install always same version?
 
 3) mariadb
 	- use phpMyAdmin to check the database
@@ -26,6 +27,5 @@
 			- socket and port can be moved under mysqld, but in that case it won't be possible to access data from host machine, bu only thorugh the wordpress interface, which is proabably the desired thing
 
 4) wordpress
-	- add note about that have to be in same folder when do _wp config create_
 	- If done manually everything works about the installation BUT NOTHING is shown when try to access from the browser, why?
-		- Possible wrong config in nginx? Maybe jut use var/www/html ?
+	- Possible wrong config in nginx? Maybe jut use var/www/html ?

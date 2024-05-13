@@ -41,13 +41,14 @@ mariadbd --verbose --help | grep -A 1 'Default option'
 mariadbd --print-defaults
 ```  
 
+### Rules
+- (_bind-address_)[https://mariadb.com/kb/en/configuring-mariadb-for-remote-client-access/]: the default is 127.0.0.1, therefore is necessary change it to _0.0.0.0_or use the rule _skip-bind-address_.
+- 
+
 ## Quick reference
 # show users
 - `mariadb -e '[mariadb-instruction]'` the instructions can be chained into long scripts like the following
 - `mariadb -e 'use mydatabase; SHOW TABLES; SHOW COLUMNS IN wp_users; SELECT display_name FROM wp_users;'`
-
-
-
 
 ## Useful links
 (Configuration of mysql)[https://dev.mysql.com/doc/refman/8.0/en/option-files.html] using option files.

@@ -10,6 +10,8 @@ Configure (php-fpm)[https://www.digitalocean.com/community/tutorials/php-fpm-ngi
 - `find . -name php` usually it'll be in /etc/php/7.4/fpm
 - 
 
+## env_file
+While using `ENV` keyword in Dockerfile, makes the env variables available for the building stage, `env_file` of docker compose acts differently, and the variable are not available when creating the image. Because of this, the installation of wordpress using the `wp` CLI has to be peformed runtime, when the environment exists.
 
 ## Others
 https://www.ionos.com/digitalguide/server/know-how/wordpress-in-docker-containers/

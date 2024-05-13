@@ -1,68 +1,78 @@
+# https://github.com/compose-spec/compose-spec/blob/master/spec.md
+
 services:
-  nginx:
+  webserver:
+    init: true
     container_name: nginx
     build: ./requirements/nginx
-    depends_on:
-      - wordpress
+    restart: always
     volumes:
       - wp-nginx-vol:/var/www/html
     ports:
       - '443:443'
+    depends_on:
+      - cms
     networks:
-      - nginx-wp-net
-    restart: always
+      nginx-wp-net:
+        aliases:
+          - nginx_ip_address
 
-  wordpress:
+  cms:
     init: true
     container_name: wordpress
-    # image: wordpress:4.7.1-php7.0-fpm
     build: ./requirements/wordpress
-    depends_on:
-      - mariadb
+    restart: always
+    env_file:
+      - ../secrets/wordpress/.env
     expose:
       - '9000'
     volumes:
       - wp-nginx-vol:/var/www/html
-    env_file:
-      - ../secrets/wordpress/.env
+    depends_on:
+      - database
     networks:
-      - nginx-wp-net
-      - wp-mariadb-net
-    restart: always
+      nginx-wp-net:
+        aliases:
+          - wp_ip
+      mariadb-wp-net:
+        aliases:
+          - wp_ip
 
-  mariadb:
+  database:
     init: true
     container_name: mariadb
     build: ./requirements/mariadb
+    restart: always
+    env_file:
+      - ../secrets/mariadb/.env
     expose:
       - '3306'
     # volumes:
-    #  - db-data:/var/lib/mysql
-    env_file:
-      - ../secrets/mariadb/.env
+    #  - mariadb-data:/var/lib/mysql
     networks:
-      - wp-mariadb-net
-    restart: always
+      mariadb-wp-net:
+        aliases:
+          - mariadb_ip
 
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - mariadb
-    ports:
-      - "8085:80"
-    environment:
-      PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: myrootpassword
-    networks:
-      - nginx-wp-net
-      - wp-mariadb-net
-    restart: always
+  # phpmyadmin:
+  #   container_name: phpmyadmin
+  #   image: phpmyadmin/phpmyadmin
+  #   depends_on:
+  #     - mariadb
+  #   ports:
+  #     - "8085:80"
+  #   environment:
+  #     PMA_HOST: mariadb
+  #     MYSQL_ROOT_PASSWORD: myrootpassword
+  #   networks:
+  #     - nginx-wp-net
+  #     - mariadb-wp-net
+  #   restart: always
 
 volumes:
   wp-nginx-vol: # need to be in /home/ncasteln/data
-  db-data: # need to be in /home/ncasteln/data
+  mariadb-data: # need to be in /home/ncasteln/data
 
 networks:
   nginx-wp-net:
-  wp-mariadb-net:
+  mariadb-wp-net:

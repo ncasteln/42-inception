@@ -3,6 +3,7 @@
 	- Check fastcgi parameters and their meaning
 	- Modify TLS1.2 1.3 http or is it enoguh in server ?
 	- ssl_cipher brief meaning
+	- secret for SSL ?
 
 2) Docker compose
 	- init: true need to be used? Why the services don't wait some second when stopped?
@@ -28,7 +29,10 @@
 			- socket and port can be moved under mysqld, but in that case it won't be possible to access data from host machine, bu only thorugh the wordpress interface, which is proabably the desired thing
 
 4) wordpress
+	- make it not re-installable if already installed
 	- If done manually everything works about the installation BUT NOTHING is shown when try to access from the browser, why?
 	- Possible wrong config in nginx? Maybe jut use var/www/html ?
 	- --allow-root remove and use sudo with www-data instead?
 	- PHP www.conf file: understand parameters
+
+5) https://stackoverflow.com/questions/24290358/remove-a-folder-from-git-tracking to remove password from history

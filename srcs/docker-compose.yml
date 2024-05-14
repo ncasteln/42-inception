@@ -7,13 +7,13 @@ services:
     build: ./requirements/nginx
     restart: always
     volumes:
-      - wp-nginx-vol:/var/www/html
+      - wp_nginx_data:/var/www/html
     ports:
       - '443:443'
     depends_on:
       - cms
     networks:
-      nginx-wp-net:
+      nginx_wp_net:
         aliases:
           - nginx_ip_address
 
@@ -22,21 +22,21 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress
     restart: always
-    env_file:
-      - ../secrets/wordpress/.env
+    secrets:
+      - wordpress_secrets
     expose:
       - '9000'
     volumes:
-      - wp-nginx-vol:/var/www/html
+      - wp_nginx_data:/var/www/html
     depends_on:
       - database
     networks:
-      nginx-wp-net:
+      nginx_wp_net:
         aliases:
-          - wp_ip
-      mariadb-wp-net:
+          - wordpress_ip
+      mariadb_wp_net:
         aliases:
-          - wp_ip
+          - wordpress_ip
 
   database:
     init: true
@@ -48,9 +48,9 @@ services:
     expose:
       - '3306'
     # volumes:
-    #  - mariadb-data:/var/lib/mysql
+    #  - mariadb_data:/var/lib/mysql
     networks:
-      mariadb-wp-net:
+      mariadb_wp_net:
         aliases:
           - mariadb_ip
 
@@ -65,14 +65,18 @@ services:
   #     PMA_HOST: mariadb
   #     MYSQL_ROOT_PASSWORD: myrootpassword
   #   networks:
-  #     - nginx-wp-net
-  #     - mariadb-wp-net
+  #     - nginx_wp_net
+  #     - mariadb_wp_net
   #   restart: always
 
 volumes:
-  wp-nginx-vol: # need to be in /home/ncasteln/data
-  mariadb-data: # need to be in /home/ncasteln/data
+  wp_nginx_data: # need to be in /home/ncasteln/data
+  mariadb_data: # need to be in /home/ncasteln/data
 
 networks:
-  nginx-wp-net:
-  mariadb-wp-net:
+  nginx_wp_net:
+  mariadb_wp_net:
+
+secrets:
+  wordpress_secrets:
+    file: ../secrets/wordpress/.env

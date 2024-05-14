@@ -6,19 +6,5 @@ GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%' WITH GRANT OPTION;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '12345';
 FLUSH PRIVILEGES;
 
-CREATE DATABASE myanimalsdb;
-USE myanimalsdb;
-CREATE TABLE animals (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	species VARCHAR(255) NOT NULL,
-	age INT NOT NULL
-);
-ALTER TABLE animals
-ADD weight DECIMAL(5,2),
-ADD diet VARCHAR(255),
-ADD habitat VARCHAR(255);
 -- docker exec mariadb-cont mariadb -e 'use myanimalsdb; SHOW TABLES; SHOW COLUMNS IN animals;'
-
-
 -- docker exec mariadb-cont mariadb -e 'SELECT user FROM mysql.user;'

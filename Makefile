@@ -14,10 +14,6 @@ NGINX_DIR	=	./srcs/requirements/nginx
 MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
-NULL		= 	>/dev/null
-
-all: nginx mariadb
-
 # ----------------------------------------------------------------------- NGINX
 nginx:
 	cd $(NGINX_DIR) && docker build -t nginx-img ./
@@ -105,8 +101,6 @@ pclean: stop #prompt clean
 	@docker network prune
 	@docker builder prune
 
-re: fclean all
-
 # ----------------------------------------------------------------------- UTILS
 display:
 	@echo "$(B)------------------------ IMAGES ------------------------$(W)";
@@ -144,5 +138,5 @@ W	=	\033[0m
 N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: all nginx nginx-run stop clean clean-img fclean re display \
+.PHONY: nginx nginx-run stop clean clean-img fclean display \
 mariadb mariadb-run  wp wp-run hclean clean-net clean-vol pclean

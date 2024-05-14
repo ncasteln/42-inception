@@ -15,9 +15,6 @@ RUN rm -rf /etc/nginx/sites-available/default
 COPY tools/generate_ssl_cert.sh /etc/tools/
 RUN /etc/tools/generate_ssl_cert.sh
 
-# check nginx configuration
-# enble to test isolated Dockerfile
-# disable in compose
-# RUN nginx -t
-
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "/usr/sbin/nginx" ]
+CMD [ "-g", "daemon off;" ]
+# nginx -t can be used to test config file

@@ -15,11 +15,11 @@ wp config create --allow-root \
   --dbhost="${WORDPRESS_DB_HOST}"
 
 wp core install --allow-root \
-  --url='localhost' \
-  --title=localhost \
-  --admin_user=admin \
-  --admin_password=admin \
-  --admin_email=admin@admin.admin \
+  --url="${DOMAIN_NAME}" \
+  --title='inception' \
+  --admin_user="${ADMIN_USER}" \
+  --admin_password="${ADMIN_PASSWORD}" \
+  --admin_email="${ADMIN_EMAIL}" \
   --path="${WP_PATH}" \
   --skip-email
 

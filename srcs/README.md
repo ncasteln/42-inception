@@ -85,15 +85,15 @@ https://github.com/krallin/tini
 
 ## CMD vs ENTRYPOINT
 The difference is well explained (here)[https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile]. Basically they set a default command to be ecexuted when a container start, with the following differences:
-- `CMD`: can be overridden by specifying a command or args when specified by running a container.
-- `ENTRYPOINT`: meant to be a fixed command, but still overwriteable with `--entrypoint` flag.
-- If used together, `CMD` will be the optional argument for `ENTRYPOINT`  
-In the following example, _docker-entrypoint.sh_ is set to be run at startap, bringing _/usr/sbin/php-fpm7.4 --nodaemonize_ as arguments. In this case, `CMD` can be overwritten by docker run when needed.
+- `ENTRYPOINT`: meant to be a fixed command to run at startup. It is still overwriteable with `--entrypoint` flag in `docker run`.
+- `CMD`: cover more or less the same pourpose, but if used with entrypoint together, it will be like an optional argument for `ENTRYPOINT`.  
+
+In the following example, _docker-entrypoint.sh_ is set to be run at startap, bringing _/usr/sbin/php-fpm7.4 --nodaemonize_ as arguments.
 ```docker
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD [ "/usr/sbin/php-fpm7.4", "--nodaemonize" ]
 ```
-An alternative to this approach would be placing _/usr/sbin/php-fpm7.4 --nodaemonize_ inside the script. In that case it would not be overwriteable.
+In this case, `CMD` can be still overwritten if needed my using `docker run --name [my-container] [my-img] [cmd-to-substitute]`.
 ___
 ___
 ___

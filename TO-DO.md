@@ -8,6 +8,7 @@
 	- init: true need to be used? Why the services don't wait some second when stopped?
 	- restart: always
 	- need to install always same version?
+	- add secrets
 
 3) mariadb
 	- use phpMyAdmin to check the database
@@ -29,3 +30,5 @@
 4) wordpress
 	- If done manually everything works about the installation BUT NOTHING is shown when try to access from the browser, why?
 	- Possible wrong config in nginx? Maybe jut use var/www/html ?
+	- --allow-root remove and use sudo with www-data instead?
+	- PHP www.conf file: understand parameters

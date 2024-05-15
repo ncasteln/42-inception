@@ -43,4 +43,6 @@ https://tuto.grademe.fr/inception/#accueil
 (docker compose sepcification)[https://github.com/compose-spec/compose-spec/blob/master/spec.md] to create the docker-compose.yml file.
 
 # git problem
+https://stackoverflow.com/questions/307828/how-do-you-fix-a-bad-merge-and-replay-your-good-commits-onto-a-fixed-merge
+
 https://github.com/newren/git-filter-repo/tree/main

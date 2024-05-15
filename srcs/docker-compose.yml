@@ -11,7 +11,8 @@ services:
     ports:
       - '443:443'
     depends_on:
-      - cms
+      cms:
+        condition: service_healthy
     networks:
       nginx_wp_net:
         aliases:
@@ -29,7 +30,8 @@ services:
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
-      - database
+      db:
+        condition: service_healthy # will start only after health check
     networks:
       nginx_wp_net:
         aliases:
@@ -37,8 +39,13 @@ services:
       mariadb_wp_net:
         aliases:
           - wordpress_ip
+    healthcheck:
+      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  database:
+  db:
     init: true
     container_name: mariadb
     build: ./requirements/mariadb
@@ -53,25 +60,15 @@ services:
       mariadb_wp_net:
         aliases:
           - mariadb_ip
-
-  # phpmyadmin:
-  #   container_name: phpmyadmin
-  #   image: phpmyadmin/phpmyadmin
-  #   depends_on:
-  #     - mariadb
-  #   ports:
-  #     - "8085:80"
-  #   environment:
-  #     PMA_HOST: mariadb
-  #     MYSQL_ROOT_PASSWORD: myrootpassword
-  #   networks:
-  #     - nginx_wp_net
-  #     - mariadb_wp_net
-  #   restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   wp_nginx_data: # need to be in /home/ncasteln/data
-  mariadb_data: # need to be in /home/ncasteln/data
+  # mariadb_data: # need to be in /home/ncasteln/data
 
 networks:
   nginx_wp_net:

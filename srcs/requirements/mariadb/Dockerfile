@@ -1,24 +1,21 @@
 FROM debian:bullseye
 
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install mariadb-server -y
+# RUN apt-get update -y
+#&& apt-get upgrade -y
+RUN apt update && apt install -y mariadb-server
 
 COPY conf/custom.cnf /etc/mysql/mariadb.conf.d/
 
 # copy file to initialize a custom database (init_file)
 # necessary to start the service alternative to mariadb_install_tables or something similar
-COPY conf/init.sql /etc/mysql/init.sql
-RUN chown root:root /etc/mysql/init.sql
+# COPY conf/init.sql /etc/mysql/init.sql
+# RUN chown root:root /etc/mysql/init.sql
 
-# purge mysql
-# RUN rm -rfd /var/lib/mysql
-# RUN mariadb-install-db
+COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
+RUN /docker-entrypoint.sh
 
-# COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
-# RUN /docker-entrypoint.sh
+# COPY tools/healthcheck.sh /healthcheck.sh
 
-# ENTRYPOINT [ "tail", "-f" ]
-# ENTRYPOINT [ "/docker-entrypoint.sh" ]
 ENTRYPOINT [ "mariadbd" ]
 
 # PROBLEM

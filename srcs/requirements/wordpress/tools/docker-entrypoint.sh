@@ -38,4 +38,5 @@ wp core install --allow-root \
 
 # rm -rf /run/secrets/wordpress_secrets;  # ------- REMOVE or PROTECT ? --- NO cannot be removed
 
-exec $@;
+# exec $@;
+/usr/sbin/php-fpm7.4 --nodaemonize;

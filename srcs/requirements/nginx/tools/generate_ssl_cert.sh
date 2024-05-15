@@ -1,7 +1,5 @@
 #!/bin/bash
 
-apt-get install openssl -y
-
 openssl req \
 	-x509 \
 	-nodes \

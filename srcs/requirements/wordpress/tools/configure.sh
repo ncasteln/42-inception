@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# install dependencies
-apt-get update -y && apt-get upgrade -y
-apt-get install wget -y
-apt-get install php-fpm -y
-apt-get install php-mysqli -y
-
 # required by php
 mkdir -p /var/run/php/php-fpm
 touch /var/run/php/php-fpm/php7.4-fpm.pid

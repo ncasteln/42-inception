@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# mariadb -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
-# mariadb -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-# mariadb -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-# mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
-# mariadb -e "FLUSH PRIVILEGES;"
+# rm -rfd /var/lib/mysql;
+# mariadb-install-db;
 
-rm -rfd /var/lib/mysql;
-mariadb-install-db;
+# /etc/init.d/mariadb start
+# mariadbd-safe;
 
-mariadbd-safe;
+echo "CREATE DATABASE ${MYSQL_DATABASE};
+CREATE USER '"${MYSQL_USER}"'@'%' IDENTIFIED BY '"${MYSQL_PASSWORD}"';
+GRANT ALL PRIVILEGES ON *.* TO '"${MYSQL_USER}"'@'%' WITH GRANT OPTION;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '"${MYSQL_ROOT_PASSWORD}"';
+FLUSH PRIVILEGES;" > /etc/mysql/init.sql
 
-mariadb -e "CREATE DATABASE IF NOT EXISTS \`helloworld\`;"
-mariadb -e "CREATE USER IF NOT EXISTS \`helloworld\`@'localhost' IDENTIFIED BY 'helloworld';"
-mariadb -e "GRANT ALL PRIVILEGES ON \`helloworld\`.* TO \`helloworld\`@'%' IDENTIFIED BY 'helloworld';"
-mariadb -e "FLUSH PRIVILEGES;"
-# mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'helloworld';"
+# chown mysql:mysql /etc/mysql/init.sql
+# chmod 400 /etc/mysql/init.sql
 
+# mariadbd;

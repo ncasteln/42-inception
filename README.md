@@ -41,3 +41,6 @@ If one of the service has not a specified network, a default network connection 
 https://tuto.grademe.fr/inception/#accueil
 
 (docker compose sepcification)[https://github.com/compose-spec/compose-spec/blob/master/spec.md] to create the docker-compose.yml file.
+
+# git problem
+https://github.com/newren/git-filter-repo/tree/main

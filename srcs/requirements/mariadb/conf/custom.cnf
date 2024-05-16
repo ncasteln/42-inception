@@ -13,4 +13,3 @@ init_file               = /etc/mysql/init.sql
 pid-file                = /var/lib/mysql/mysqld.pid
 skip-bind-address
 log_error               = /var/lib/mysql/mariadb.err
-

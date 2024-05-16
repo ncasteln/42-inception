@@ -1,21 +1,15 @@
 # NGINX
 
-## nginx told to a child
-// ----- !!!! to complete !!!! ------ //  
-// ----- !!!! to complete !!!! ------ //  
-// ----- !!!! to complete !!!! ------ //  
-// ----- !!!! to complete !!!! ------ //  
-// ----- !!!! to complete !!!! ------ //  
-
 ## What is NGINX
-Open-source software for web serving, reverse proxying, caching and more. It was initially wrote to solve the [C10K problem](https://en.wikipedia.org/wiki/C10k_problem), means, optimize network sockets to handle a large amount of clients at the same time.
+Open-source software for web serving, reverse proxying, caching and more. It was initially wrote to solve the [C10K problem](https://en.wikipedia.org/wiki/C10k_problem), means, optimize network sockets to handle a large amount of clients at the same time.  
 Basically it acts as a _reverse proxy_, an intermediate layer between the browser and the server, to handle the incoming requests. Some benefits are related to load balancing, memory caching, encryption and security. In general it results in improved performances.
 
-## HTTP & HTTPS
+## Basic related concepts
+### HTTP & HTTPS
 - *HTTP* - Hyper-Text Transfer Protocol. The informations are NOT encrypted.  
 - *HTTPS* - Secure Hyper-Text Transfer Protocol. The informations are encrypted using SSL/TLS protocols.  
 
-## SSL & TLS
+### SSL & TLS
 - *SSL* - Secure Socket Layer  
 - *TLS* - Transport Layer Security  
 - *openssl* - is an implementation of those protocols, therefore used to generate a key and a certificate  
@@ -24,7 +18,7 @@ Jobs:
 - Trust validation between client-server. Basically the server asks to the requesting computer to identify itself, and after this the data will be exchanged.  
 - Connection encryption. The server owns a public key which is shared with anyone who wants to connect, and a private one, used to encrypt/decrypt the message (see asymmetric encryption).  
 
-## URI & URL (& URN)
+### URI & URL (& URN)
 - *URI* (Uniform Resources Identifier): identifier for any type of resource, not only on internet.  
 _Examples_: urn:isbn:978-3-16-148410-0, \`mailto:info@example.com\`, tel:+1-212-555-1212
 - *URL* (Uniform Resources Locator): specific type of URI used to locate resources on internet.
@@ -36,7 +30,7 @@ Location of the configuration files:
 - _/etc/nginx/nginx.conf_: contains the _http_ and _events_ context, which are inside the _main_ context. Inside _http_ we will place the _server_ blocks, in which take place one or more _location_ blocks. Let's note that at the end of the _http_ block inside this conf file the are those statements, which will be inside the _http_ scope:
 	- _include /etc/nginx/conf.d/*.conf;_
 	- _include /etc/nginx/sites-enabled/*;_
-Because of this, we will have to change the whole _nginx.conf_ because it also hold SSL settings, which the subject require to be set in a certain way.
+Therefore, by adding a file to those folder, would add our custom configurations. Pay attention that there are some strange bad documented facts about _/etc/nginx/sites-enabled/_ and _/etc/nginx/sites-available/_ in Debian, which you can eventually explore in [this](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) and [this](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) questions.
 
 ## Configuration terms
 - *_Context_*: delimited by curly brackets `{...}`. By nesting them, configurations can be inherited.
@@ -122,8 +116,7 @@ Those directives could influence the behavior after a location block is choosen.
 [Nginx crash course](https://www.youtube.com/watch?v=7VAI73roXaY&t=686s) I used to learn the basics.
 [Round-robin algorithm](https://en.wikipedia.org/wiki/Round-robin_scheduling), the defualt used to proxy the traffic to servers.  
 Nginx Configuration with [FastCGI and PHP-fpm](https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/). 
-[sites-enabled & sites-available](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) folders.
-Check also [this answer](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) in case of doubt.
+
 
 [Non-profit SSL certificate](https://letsencrypt.org/) to enable https.
 

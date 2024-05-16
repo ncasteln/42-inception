@@ -1,4 +1,7 @@
 # TO DO AND TO LEARN LIST
+0) GENERAL
+	- Why not trying Alpine? It seems lightweighter instead of Debian.
+
 1) NGINX
 	**TO LEARN**
 	- Check fastcgi parameters and their meaning
@@ -9,12 +12,19 @@
 2) Docker compose
 	**TO LEARN**
 	- init: true need to be used? Why the services don't wait some second when stopped?
+		ANSWER: try mariadb because somewhere was suggested that myabe SIGTERM i not handled. Just try it.
 	- need to install always the same fixed version?
+		ANSWER: sure no need but can be tried. Add check which check by RUNTIME apt-get list --upgradeable; check which is the result to make condition true or false.
 	- add secrets: is it really a smart thing to do ? Wait for answer
+		ANSWER:
 
 3) mariadb
 	**TO DO**
+	- Like bootstrap, maybe is possible to set the configuration by command line, which would get rid of the necessity to use the configuration files. TRY!
 	- use --bootstrap for mariadbd ? It seemed a good idea
+		ANSWER: https://mariadb.com/kb/en/mariadbd-options/#-bootstrap 
+	
+	**CHECKS**
 	- Check if exists the anonymouse user
 	- What happens to root?
 		- Try to access without password

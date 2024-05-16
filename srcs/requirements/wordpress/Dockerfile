@@ -1,8 +1,5 @@
 FROM debian:bullseye
 
-# wordpress pre-config
-# RUN apt-get update -y
-#&& apt-get upgrade -y
 RUN apt update -y && apt install -y \
     wget \
     php-fpm \

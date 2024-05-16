@@ -1,16 +1,8 @@
 FROM debian:bullseye
 
-# RUN apt-get update -y
 RUN apt-get update && apt-get install -y \
     nginx \
     openssl
-
-    # RUN apt update && apt install -y \
-#     nginx \
-#     openssl
-
-#&& apt-get upgrade -y
-# RUN apt-get install procps -y
 
 # nginx configuration
 # either use conf.d & remove sites-[enabled|available]/default

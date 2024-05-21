@@ -1,7 +1,7 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
 services:
-  webserver:
+  nginx:
     init: true
     container_name: nginx
     build: ./requirements/nginx
@@ -11,14 +11,15 @@ services:
     ports:
       - '443:443'
     depends_on:
-      cms:
-        condition: service_healthy
+      - wordpress
+      # wordpress:
+      #   condition: service_healthy
     networks:
       nginx_wp_net:
         aliases:
           - nginx_ip_address
 
-  cms:
+  wordpress:
     init: true
     container_name: wordpress
     build: ./requirements/wordpress
@@ -30,8 +31,9 @@ services:
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
-      db:
-        condition: service_healthy # will start only after health check
+      - mariadb
+      # db:
+      #   condition: service_healthy # will start only after health check
     networks:
       nginx_wp_net:
         aliases:
@@ -39,19 +41,19 @@ services:
       mariadb_wp_net:
         aliases:
           - wordpress_ip
-    healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
-  db:
+  mariadb:
     init: true
     container_name: mariadb
     build: ./requirements/mariadb
     restart: always
-    env_file:
-      - ../secrets/mariadb/.env
+    secrets:
+      - mariadb_secrets
     expose:
       - '3306'
     # volumes:
@@ -61,7 +63,7 @@ services:
         aliases:
           - mariadb_ip
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pmyrootpassword"] # controllare qua porcodiooooo!
       interval: 10s
       timeout: 5s
       retries: 5
@@ -77,3 +79,5 @@ networks:
 secrets:
   wordpress_secrets:
     file: ../secrets/wordpress/.env
+  mariadb_secrets:
+    file: ../secrets/mariadb/.env

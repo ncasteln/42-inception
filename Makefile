@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
+#    By: nico <nico@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/10 12:18:36 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/05/17 17:51:32 by nico             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ mariadb:
 	@cd $(MARIADB_DIR) && docker build -t mariadb-img ./
 
 mariadb-run: mariadb
-	@cd $(MARIADB_DIR) && docker run --init --detach --name mariadb-cont --publish 3306:3306 mariadb-img;
+	@cd $(MARIADB_DIR) && docker run --detach --name mariadb-cont --publish 3306:3306 mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
 	else \

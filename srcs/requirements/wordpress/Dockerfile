@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt update -y && apt install -y \
+RUN apt-get update -y && apt-get install -y \
     wget \
     php-fpm \
     php-mysqli

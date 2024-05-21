@@ -1,0 +1,23 @@
+services:
+  db:
+    init: true
+    container_name: mariadb
+    build: .
+    restart: always
+    secrets:
+      - mariadb_secrets
+    expose:
+      - '3306'
+    # volumes:
+    #  - mariadb_data:/var/lib/mysql
+    networks:
+      mariadb_wp_net:
+        aliases:
+          - mariadb_ip
+
+networks:
+  mariadb_wp_net:
+
+secrets:
+  mariadb_secrets:
+    file: ../../../secrets/mariadb/.env

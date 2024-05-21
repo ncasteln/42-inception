@@ -13,10 +13,11 @@
 	**TO LEARN**
 	- init: true need to be used? Why the services don't wait some second when stopped?
 		ANSWER: try mariadb because somewhere was suggested that myabe SIGTERM i not handled. Just try it.
+		RESULT: init doesn't change anything when mariadb container is stopped. So what?
 	- need to install always the same fixed version?
 		ANSWER: sure no need but can be tried. Add check which check by RUNTIME apt-get list --upgradeable; check which is the result to make condition true or false.
 	- add secrets: is it really a smart thing to do ? Wait for answer
-		ANSWER:
+		ANSWER: ???
 
 3) mariadb
 	**TO DO**

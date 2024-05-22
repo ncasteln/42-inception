@@ -45,6 +45,9 @@ mariadbd --print-defaults
 - (_bind-address_)[https://mariadb.com/kb/en/configuring-mariadb-for-remote-client-access/]: the default is 127.0.0.1, therefore is necessary change it to _0.0.0.0_or use the rule _skip-bind-address_.
 - 
 
+### Healthcheck
+A simple healthcheck is performed, so that wordpress waits tha mariadb is healthy. `mysqladmin ping` is used to perform this check. To understand how it works properly, check the (official mysql documentation)[https://dev.mysql.com/doc/refman/8.0/en/mysqladmin.html]. Important to note, that `mysqladmin ping` returns 0 also in case of _Access denied_ because that has a different meaning from a not-running server.
+
 ## Quick reference
 # show users
 - `mariadb -e '[mariadb-instruction]'` the instructions can be chained into long scripts like the following

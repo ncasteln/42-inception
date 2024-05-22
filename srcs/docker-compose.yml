@@ -11,9 +11,8 @@ services:
     ports:
       - '443:443'
     depends_on:
-      - wordpress
-      # wordpress:
-      #   condition: service_healthy
+      wordpress:
+        condition: service_healthy
     networks:
       nginx_wp_net:
         aliases:
@@ -32,8 +31,7 @@ services:
       - wp_nginx_data:/var/www/html
     depends_on:
       mariadb:
-        condition: service_healthy # will start only after health check
-      # - mariadb
+        condition: service_healthy
     networks:
       nginx_wp_net:
         aliases:
@@ -41,11 +39,11 @@ services:
       mariadb_wp_net:
         aliases:
           - wordpress_ip
-    # healthcheck:
-    #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mariadb:
     init: true
@@ -63,7 +61,7 @@ services:
         aliases:
           - mariadb_ip
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pmyrootpassword"] # controllare qua porcodiooooo!
+      test: ["CMD-SHELL", "mysqladmin ping"]
       interval: 10s
       timeout: 5s
       retries: 5

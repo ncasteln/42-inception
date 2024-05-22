@@ -36,9 +36,6 @@
 # https://mariadb.org/get-involved/
 
 # ----------------------------------------------------
-# # rm -rfd /var/lib/mysql;
-# # mariadb-install-db;
-
 MARIADB_SECRETS='/run/secrets/mariadb_secrets'
 
 MYSQL_DATABASE=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_DATABASE' | awk -F '=' '{ print $2 }')
@@ -52,16 +49,4 @@ GRANT ALL PRIVILEGES ON *.* TO '"${MYSQL_USER}"'@'%' WITH GRANT OPTION;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '"${MYSQL_ROOT_PASSWORD}"';
 FLUSH PRIVILEGES;" > /etc/mysql/init.sql
 
-# chown mysql:mysql /etc/mysql/init.sql
-# chmod 777 /etc/mysql/init.sql
-
 exec $@;
-
-
-
-# ----------------------------------------------------
-# Not working: it was confusing because of init_file in .cnf configuration
-#!/bin/bash
-
-# mariadbd --bootstrap "/etc/mysql/init.sql";
-# exec $@;

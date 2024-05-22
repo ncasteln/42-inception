@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ----------------------------------------------------
-rm -rfd /var/lib/mysql;
-mkdir /var/lib/mysql;
-chown -R mysql:mysql /var/lib/mysql;
+# rm -rfd /var/lib/mysql;
+# mkdir /var/lib/mysql;
+# chown -R mysql:mysql /var/lib/mysql;
 
-chown -R mysql:mysql /etc/mysql/init.sql;
-mariadbd --bootstrap '/etc/mysql/init.sql'; # check logs at cat /var/lib/mysql/mariadb.err
-tail -f;
+# chown -R mysql:mysql /etc/mysql/init.sql;
+# mariadbd --bootstrap '/etc/mysql/init.sql'; # check logs at cat /var/lib/mysql/mariadb.err
+# tail -f;
 
 # To start mariadbd at boot time you have to copy
 # support-files/mariadb.service to the right place for your system
@@ -35,31 +35,27 @@ tail -f;
 # Consider joining MariaDB's strong and vibrant community:
 # https://mariadb.org/get-involved/
 
-
-
 # ----------------------------------------------------
 # # rm -rfd /var/lib/mysql;
 # # mariadb-install-db;
 
-# MARIADB_SECRETS='/run/secrets/mariadb_secrets'
+MARIADB_SECRETS='/run/secrets/mariadb_secrets'
 
-# MYSQL_DATABASE=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_DATABASE' | awk -F '=' '{ print $2 }')
-# MYSQL_USER=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_USER' | awk -F '=' '{ print $2 }')
-# MYSQL_PASSWORD=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_PASSWORD' | awk -F '=' '{ print $2 }')
-# MYSQL_ROOT_PASSWORD=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_ROOT_PASSWORD' | awk -F '=' '{ print $2 }')
+MYSQL_DATABASE=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_DATABASE' | awk -F '=' '{ print $2 }')
+MYSQL_USER=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_USER' | awk -F '=' '{ print $2 }')
+MYSQL_PASSWORD=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_PASSWORD' | awk -F '=' '{ print $2 }')
+MYSQL_ROOT_PASSWORD=$(cat "${MARIADB_SECRETS}" | grep 'MYSQL_ROOT_PASSWORD' | awk -F '=' '{ print $2 }')
 
-# echo "CREATE DATABASE "${MYSQL_DATABASE}";
-# CREATE USER '"${MYSQL_USER}"'@'%' IDENTIFIED BY '"${MYSQL_PASSWORD}"';
-# GRANT ALL PRIVILEGES ON *.* TO '"${MYSQL_USER}"'@'%' WITH GRANT OPTION;
-# ALTER USER 'root'@'localhost' IDENTIFIED BY '"${MYSQL_ROOT_PASSWORD}"';
-# FLUSH PRIVILEGES;" > /etc/mysql/init.sql
+echo "CREATE DATABASE "${MYSQL_DATABASE}";
+CREATE USER '"${MYSQL_USER}"'@'%' IDENTIFIED BY '"${MYSQL_PASSWORD}"';
+GRANT ALL PRIVILEGES ON *.* TO '"${MYSQL_USER}"'@'%' WITH GRANT OPTION;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '"${MYSQL_ROOT_PASSWORD}"';
+FLUSH PRIVILEGES;" > /etc/mysql/init.sql
 
-# mariadbd --bootstrap "/etc/mysql/init.sql";
+# chown mysql:mysql /etc/mysql/init.sql
+# chmod 777 /etc/mysql/init.sql
 
-# # chown mysql:mysql /etc/mysql/init.sql
-# # chmod 400 /etc/mysql/init.sql
-
-# exec $@;
+exec $@;
 
 
 

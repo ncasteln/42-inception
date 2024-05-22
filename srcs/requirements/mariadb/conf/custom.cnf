@@ -1,6 +1,5 @@
-# Port or socket location where to connect
 [client-server]
-# replace default /run/mysqld/mysqld.sock
+# @socket: will overwrite the default /run/mysqld/mysqld.sock
 socket                  = /var/lib/mysql/mysqld.sock
 port                    = 3306
 
@@ -11,5 +10,5 @@ init_file               = /etc/mysql/init.sql
 # this is only for the mysqld standalone daemon
 [mysqld]
 pid-file                = /var/lib/mysql/mysqld.pid
-skip-bind-address
 log_error               = /var/lib/mysql/mariadb.err
+skip-bind-address

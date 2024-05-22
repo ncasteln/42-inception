@@ -31,9 +31,9 @@ services:
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
-      - mariadb
-      # db:
-      #   condition: service_healthy # will start only after health check
+      mariadb:
+        condition: service_healthy # will start only after health check
+      # - mariadb
     networks:
       nginx_wp_net:
         aliases:

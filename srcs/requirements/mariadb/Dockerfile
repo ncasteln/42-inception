@@ -4,14 +4,20 @@ RUN apt-get update && apt-get install -y mariadb-server
 
 COPY conf/custom.cnf /etc/mysql/mariadb.conf.d/
 
-#works
+# copying init.sql
 COPY conf/init.sql /etc/mysql/init.sql
-ENTRYPOINT [ "mariadbd" ]
+COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "mariadbd" ]
 
-# why this fucking approach doesnt work properly?
+# works
+# COPY conf/init.sql /etc/mysql/init.sql
+# ENTRYPOINT [ "mariadbd" ]
+
+# creating it
 # COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
 # ENTRYPOINT [ "/docker-entrypoint.sh" ]
-# CMD [ "mariadbd "]
+# CMD [ "mariadbd" ]
 
-# add later
-# COPY tools/healthcheck.sh /healthcheck.sh
+# maintaining alive
+# ENTRYPOINT [ "tail", "-f" ]

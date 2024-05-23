@@ -1,3 +1,11 @@
+############################## inception #############################
+#                                                                    #
+# This file is copied to /etc/mysql/mariadb.conf.d/and it's the last #
+# configuration file which is included (check /etc/mysql/my.cnf). In #
+# case there is the same rule twice, the last is applied.            #
+#                                                                    #
+######################################################################
+
 [client-server]
 # @socket: will overwrite the default /run/mysqld/mysqld.sock
 socket                  = /var/lib/mysql/mysqld.sock

@@ -13,4 +13,3 @@ mv wp-cli.phar /usr/local/bin/wp
 mkdir -p /var/www/html/localhost/public_html
 chown -R www-data:www-data /var/www/html/localhost/public_html
 chown -R www-data:www-data /var/www/
-

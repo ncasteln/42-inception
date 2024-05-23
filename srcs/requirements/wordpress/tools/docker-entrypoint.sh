@@ -21,6 +21,13 @@ wp config create --allow-root \
   --dbpass="$WORDPRESS_DB_PASSWORD" \
   --dbhost="$WORDPRESS_DB_HOST"
 
+# redis
+#<< EOF \
+# define( 'WP_CACHE', true ); \
+# define('WP_REDIS_HOST', 'redis'); \
+# define('WP_REDIS_PORT', '6379'); \
+# EOF
+
 # wp installation
 DOMAIN_NAME=$(cat "${WP_SECRETS}" | grep 'DOMAIN_NAME' | awk -F '=' '{ print $2 }')
 ADMIN_USER=$(cat "${WP_SECRETS}" | grep 'ADMIN_USER' | awk -F '=' '{ print $2 }')

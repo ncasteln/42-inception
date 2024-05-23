@@ -14,9 +14,7 @@ services:
       wordpress:
         condition: service_healthy
     networks:
-      nginx_wp_net:
-        aliases:
-          - nginx_ip_address
+      - nginx_wp_net
 
   wordpress:
     init: true
@@ -37,8 +35,6 @@ services:
         aliases:
           - wordpress_ip
       mariadb_wp_net:
-        aliases:
-          - wordpress_ip
     healthcheck:
       test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
       interval: 10s
@@ -57,14 +53,22 @@ services:
     # volumes:
     #  - mariadb_data:/var/lib/mysql
     networks:
-      mariadb_wp_net:
-        aliases:
-          - mariadb_ip
+      - mariadb_wp_net
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # redis:
+  #   init: true
+  #   container_name: redis
+  #   image: 'redis:alpine'
+  #   restart: always
+  #   networks:
+  #     - mariadb_wp_net
+  #   expose:
+  #     - '6379'
 
 volumes:
   wp_nginx_data: # need to be in /home/ncasteln/data

@@ -6,7 +6,7 @@
 #    By: nico <nico@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/23 11:40:13 by nico             ###   ########.fr        #
+#    Updated: 2024/05/23 17:47:58 by nico             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,16 @@ WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
 build:
-	@echo "$(B)* Building the images of each service...$(W)";
-	cd ./srcs/ && docker compose build
+	@echo "$(G)* Building the images of each service...$(W)";
+	@cd ./srcs/ && docker compose build
 
 up: build
-	@echo "$(B)* Creating the containers...$(W)";
-	cd ./srcs/ && docker compose up -d
+	@echo "$(G)* Creating containers...$(W)";
+	@cd ./srcs/ && docker compose up -d
 
 down:
-	cd ./srcs/ && docker compose down
+	@echo "$(G)* Removing containers...$(W)";
+	@cd ./srcs/ && docker compose down
 
 # ----------------------------------------------------------------------- NGINX
 nginx:

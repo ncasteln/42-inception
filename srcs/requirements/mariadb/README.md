@@ -3,11 +3,16 @@
 mariaDB is a fork of MySql, open-source relational database management system. While _relational_ db are structured in rown and columns, the _non-relational_ organize the data in docs, collections, graphs, in a more flexible and complex structure. Check (pros and cons)[https://www.hostinger.com/tutorials/mariadb-vs-mysql] of mariaDB and MySql.
 
 ## Pre-training  
-Run a mariadb-server container and then a client using docker hub images.
-- `docker network create mariadb-network`
-- `docker run --name=mariadb-server --detach --network mariadb-network --env='MYSQL_ROOT_PASSWORD=myrootpassword' mariadb:latest`
-- (optional) Try to populate the container: `docker exec -it mariadb-server mariadb -u root -p`
-- `docker run -it --rm --name=mariadb-client --network mariadb-network mariadb:latest mariadb -u root -h mariadb-server -p`
+Run a mariadb-server container and then a client using docker-hub images.
+```docker
+docker network create mariadb-network;
+
+docker run --name=mariadb-server --detach --network mariadb-network --env='MYSQL_ROOT_PASSWORD=myrootpassword' mariadb:latest;
+
+(optional) Try to populate the container: `docker exec -it mariadb-server mariadb -u root -p;
+
+docker run -it --rm --name=mariadb-client --network mariadb-network mariadb:latest mariadb -u root -h mariadb-server -p;
+```
 
 ## Configuration
 https://dev.mysql.com/doc/refman/8.0/en/option-files.html

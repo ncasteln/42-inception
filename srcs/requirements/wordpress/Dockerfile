@@ -17,4 +17,4 @@ COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
 # entrypoint
 WORKDIR /var/www/html
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-# CMD [ "/usr/sbin/php-fpm7.4", "--nodaemonize" ]
+CMD [ "/usr/sbin/php-fpm7.4", "--nodaemonize" ]

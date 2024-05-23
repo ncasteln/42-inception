@@ -2,7 +2,6 @@
 
 # @param $@ /usr/sbin/php-fpm7.4 --nodaemonize is default argument provided by Dockerfile
 
-
 WP_PATH='/var/www/html/localhost/public_html/'
 WP_SECRETS='/run/secrets/wordpress_secrets'
 
@@ -37,7 +36,4 @@ wp core install --allow-root \
   --path="$WP_PATH" \
   --skip-email
 
-# rm -rf /run/secrets/wordpress_secrets;  # ------- REMOVE or PROTECT ? --- NO cannot be removed
-
-# exec $@;
-/usr/sbin/php-fpm7.4 --nodaemonize;
+exec $@;

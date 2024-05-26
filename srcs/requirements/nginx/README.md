@@ -1,19 +1,32 @@
 # NGINX
 
 ## What is NGINX
-Open-source software for web serving, reverse proxying, caching and more. It was initially wrote to solve the [C10K problem](https://en.wikipedia.org/wiki/C10k_problem), means, optimize network sockets to handle a large amount of clients at the same time.  
+_nginx_ is an open-source software for web serving, reverse proxying, caching and more. It was initially wrote to solve the [C10K problem](https://en.wikipedia.org/wiki/C10k_problem), means, optimize network sockets to handle a large amount of clients at the same time.  
 Basically it acts as a _reverse proxy_, an intermediate layer between the browser and the server, to handle the incoming requests. Some benefits are related to load balancing, memory caching, encryption and security. In general it results in improved performances.
 
 ## Basic related concepts
+### workers
+A _worker_ in nginx is a separate process which handles incoming connections and processes the requests. Each worker can handle multiple connection, therefore it can process multiple requests simultaneously.
+
 ### HTTP & HTTPS
 - *HTTP* - Hyper-Text Transfer Protocol. The informations are NOT encrypted.  
 - *HTTPS* - Secure Hyper-Text Transfer Protocol. The informations are encrypted using SSL/TLS protocols.  
+
+### CGI & FastCGI
+_Common Gateway Interface_ is a protocol which describes how a web server communicates with an external program (called CGI script), to process the request of a dynamic content. In other words, how _data sharing_ has to be done, while before there were compatibility issues.  
+Pros:
+- No garbage collection, because the memory reserved for the process created is automatically freed when it ends.
+- Portable, thanks to the possibility to use multiple and different programming languages without any effort.
+Cons: 
+- Since each request results in a new process, it could have performance issues with high traffic.
+- Vulnerability.
+
+_FastCGI_ is the evolution of CGI. Instead of creating a new process for each request, there is a persistent process pool which remains alive, resulting in better performances. Here [PHP-FPM](../wordpress/README.md/#php-fpm) comes into play.
 
 ### SSL & TLS
 - *SSL* - Secure Socket Layer  
 - *TLS* - Transport Layer Security  
 - *openssl* - is an implementation of those protocols, therefore used to generate a key and a certificate  
-
 Jobs:
 - Trust validation between client-server. Basically the server asks to the requesting computer to identify itself, and after this the data will be exchanged.  
 - Connection encryption. The server owns a public key which is shared with anyone who wants to connect, and a private one, used to encrypt/decrypt the message (see asymmetric encryption).  
@@ -25,14 +38,19 @@ _Examples_: urn:isbn:978-3-16-148410-0, \`mailto:info@example.com\`, tel:+1-212-
 _Examples_: \`https://www.example.com/index.html\`, \`ftp://ftp.example.com/files/document.pdf\`
 - *URN* (Uniform Resources Name): persistent and location-indipendent identifier.  
 
+### sockets
+A socket is a strategy for communication between client-server. It can be defined as an endpoint for communication. Given a communication between 2 processes over a network, each of them will have its own socket. The server waits and listen to a port, the client will send a request, the server accepts it and the connection is established. Identity of a socket: [IP address]:[port number].
+
 ## Configuration file
 Location of the configuration files:
 - _/etc/nginx/nginx.conf_: contains the _http_ and _events_ context, which are inside the _main_ context. Inside _http_ we will place the _server_ blocks, in which take place one or more _location_ blocks. Let's note that at the end of the _http_ block inside this conf file the are those statements, which will be inside the _http_ scope:
 	- _include /etc/nginx/conf.d/*.conf;_
 	- _include /etc/nginx/sites-enabled/*;_
-Therefore, by adding a file to those folder, would add our custom configurations. Pay attention that there are some strange bad documented facts about _/etc/nginx/sites-enabled/_ and _/etc/nginx/sites-available/_ in Debian, which you can eventually explore in [this](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) and [this](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) questions.
+Therefore, by adding a file to those folder, would add our custom configurations.  
 
-## Configuration terms
+Pay attention that there are some strange bad documented facts about _/etc/nginx/sites-enabled/_ and _/etc/nginx/sites-available/_ in Debian, which you can eventually explore in [this](https://serverfault.com/questions/1075019/nginx-on-debian-buster-the-right-way-to-handle-config-files) and [this](https://stackoverflow.com/questions/41303885/nginx-do-i-really-need-sites-available-and-sites-enabled-folders) questions.
+
+### Configuration terms
 - *_Context_*: delimited by curly brackets `{...}`. By nesting them, configurations can be inherited.
 - *_Directive_*: the context is made of rule, the directives. They can be used only in the context that they were designed for, otherwise an error is returned.
 
@@ -43,14 +61,7 @@ Main contexts:
 - _server_: nested in HTTP, can be declared multiple times. The type of this context determines which algorithm is choosen by nginx to handle request.
 - _location_: nested in server contexts, and in themselves. Used to define endpoints.
 
-## Other terms
-- _Daemon process_: a process which runs in the background.  
-- _Load balancing_: the process to make efficient the distribution of tasks, given the resources (like a big amount of requests directed to a group of server).s  
-- _Sockets_: strategy for communication between client-server. It can be defined as an endpoint for communication. Given a communication between 2 processes over a network, each of them will have its own socket. The server waits and listen to a port, the client will send a request, the server accepts it and the connection is established. Identity of a socket: [IP address]:[port number].
-
-## How works the nginx request processing
-https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms
-
+## How nginx processes a request
 In general, nginx try to find the best match of a request:
 ### I - Choose the right server block
 1) **Parse the _listen_ directive**

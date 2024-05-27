@@ -2,6 +2,16 @@
 
 # @param $@ /usr/sbin/php-fpm7.4 --nodaemonize is default argument provided by Dockerfile
 
+# if [ wp core is-installed --allow-root --path=/var/www/html/localhost/public_html ]
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+  # !! !! !! !! !! !!
+
 WP_PATH='/var/www/html/localhost/public_html/'
 WP_SECRETS='/run/secrets/wordpress_secrets'
 # WP_SECRETS='/var/www/.env'

@@ -1,7 +1,5 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
-version: '3.8'
-
 services:
   nginx:
     container_name: nginx
@@ -24,8 +22,6 @@ services:
     restart: always
     secrets:
       - wordpress_secrets
-      # - source: wp_credentials
-      #   target: /root/wp_credentials.txt
     expose:
       - '9000'
     volumes:
@@ -36,9 +32,11 @@ services:
       #   condition: service_healthy
     networks:
       nginx_wp_net:
-        aliases:
-          - wordpress_ip
       mariadb_wp_net:
+      # nginx_wp_net:
+      #   aliases:
+      #     - wordpress_ip
+      # mariadb_wp_net:
     # healthcheck:
     #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
     #   interval: 10s

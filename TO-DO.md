@@ -37,6 +37,8 @@
 4) wordpress
 	**TO LEARN**
 	- PHP www.conf file: understand parameters
+		- 0.0.0.0 use wordpress_ip instead?
+		- other changed need to be?
 
 	**TO DO**
 	- Thing about the 2 users: how should be organized ?

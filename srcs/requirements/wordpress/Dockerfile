@@ -14,6 +14,8 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/
 # wordpress installer
 COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
 
+# COPY ../../../secrets/wordpress/.env /
+
 # entrypoint
 USER www-data
 WORKDIR /var/www/html

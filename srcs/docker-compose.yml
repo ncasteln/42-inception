@@ -1,5 +1,7 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
+version: '3.8'
+
 services:
   nginx:
     container_name: nginx
@@ -21,7 +23,7 @@ services:
     build: ./requirements/wordpress
     restart: always
     secrets:
-      - wordpress_secrets
+      - wp_credentials
     expose:
       - '9000'
     volumes:
@@ -46,7 +48,7 @@ services:
     build: ./requirements/mariadb
     restart: always
     secrets:
-      - mariadb_secrets
+      - mariadb_credentials
     expose:
       - '3306'
     # volumes:
@@ -68,7 +70,7 @@ networks:
   mariadb_wp_net:
 
 secrets:
-  wordpress_secrets:
+  wp_credentials:
     file: ../secrets/wordpress/.env
-  mariadb_secrets:
+  mariadb_credentials:
     file: ../secrets/mariadb/.env

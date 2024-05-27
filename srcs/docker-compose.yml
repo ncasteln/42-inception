@@ -22,8 +22,8 @@ services:
     restart: always
     secrets:
       - wordpress_secrets
-    expose:
-      - '9000'
+    # expose:
+    #   - '9000'
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
@@ -33,10 +33,6 @@ services:
     networks:
       nginx_wp_net:
       mariadb_wp_net:
-      # nginx_wp_net:
-      #   aliases:
-      #     - wordpress_ip
-      # mariadb_wp_net:
     # healthcheck:
     #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
     #   interval: 10s
@@ -55,11 +51,11 @@ services:
     #  - mariadb_data:/var/lib/mysql
     networks:
       - mariadb_wp_net
-    # healthcheck:
-    #   test: ["CMD-SHELL", "mysqladmin ping"]
-    #   interval: 5s
-    #   timeout: 5s
-    #   retries: 3
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
 
 volumes:
   wp_nginx_data: # need to be in /home/ncasteln/data
@@ -67,7 +63,9 @@ volumes:
 
 networks:
   nginx_wp_net:
+    name: nginx_wp
   mariadb_wp_net:
+    name: mariadb_wp
 
 secrets:
   wordpress_secrets:

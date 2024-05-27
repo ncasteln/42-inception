@@ -6,18 +6,7 @@
 	- One or Two networks????
 	- healtchecks params
 	- network: how to set up? Possibilities: 
-		1) set up an inception connection, shared between all the services -- BAD PRACTICE? https://www.docker.com/blog/docker-networking-design-philosophy/
-		2) set up two different connection -- BETTER, but how can i bind-address to only one address?
-			TRY: 
-				-- make a new branch to revert
-
-				-- add the IPV4 to wordpress 
-				-- change bind-address in custom.conf 
-				-- change script that generates init.sql file
-
-				-- additionaly create the others IPV4 and change:
-					-- wordpress www.conf
-					-- nginx ncasteln.conf
+		DEFINITIVE: give a name to the network, and use it inside www.conf and the others. check www.conf and start from there
 
 1) NGINX
 	**TO LEARN**

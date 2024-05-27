@@ -3,6 +3,8 @@
 	**TO DO**
 	- Change hostname in the various places!
 	- How protect secrets: /run/secrets/...; remove init.sql (maybe possible in makefile)
+	- One or Two networks????
+	- healtchecks params
 
 1) NGINX
 	**TO LEARN**

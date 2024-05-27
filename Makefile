@@ -15,13 +15,13 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-build:
-	@echo "$(G)* Building the images of each service...$(W)";
-	@cd ./srcs/ && docker compose build
-
 up: build
 	@echo "$(G)* Creating containers...$(W)";
 	@cd ./srcs/ && docker compose up -d
+
+build:
+	@echo "$(G)* Building the images of each service...$(W)";
+	@cd ./srcs/ && docker compose build
 
 down:
 	@echo "$(G)* Removing containers...$(W)";
@@ -31,7 +31,7 @@ down:
 nginx:
 	cd $(NGINX_DIR) && docker build -t nginx-img ./
 
-nginx-run: nginx
+nginx-cont: nginx
 	@cd $(NGINX_DIR) && docker run --detach --name nginx-cont -p 443:443 nginx-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep nginx-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* nginx is running$(W)"; \
@@ -43,7 +43,7 @@ nginx-run: nginx
 mariadb:
 	@cd $(MARIADB_DIR) && docker build -t mariadb-img ./
 
-mariadb-run: mariadb
+mariadb-cont: mariadb
 	@cd $(MARIADB_DIR) && docker run --init --detach --name mariadb-cont --publish 3306:3306 mariadb-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep mariadb-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* mariadb is running$(W)"; \
@@ -55,7 +55,7 @@ mariadb-run: mariadb
 wp:
 	@cd $(WP_DIR) && docker build -t wp-img ./
 
-wp-run: wp
+wp-cont: wp
 	@cd $(MARIADB_DIR) && docker run --init -it --name wp-cont -p 9000:9000 wp-img;
 	@if [ $$(docker ps -a --filter "status=running" | grep wp-cont | wc -l) -ne 0 ]; then \
 		echo "$(G)* wp is running$(W)"; \
@@ -144,5 +144,5 @@ W	=	\033[0m
 N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
-.PHONY: nginx nginx-run stop clean clean-img fclean display \
-mariadb mariadb-run  wp wp-run hclean clean-net clean-vol build up down
+.PHONY: nginx nginx-cont stop clean clean-img fclean display \
+mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down

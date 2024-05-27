@@ -2,7 +2,6 @@
 
 services:
   nginx:
-    init: true
     container_name: nginx
     build: ./requirements/nginx
     restart: always
@@ -11,13 +10,13 @@ services:
     ports:
       - '443:443'
     depends_on:
-      wordpress:
-        condition: service_healthy
+      - wordpress
+      # wordpress:
+      #   condition: service_healthy
     networks:
       - nginx_wp_net
 
   wordpress:
-    init: true
     container_name: wordpress
     build: ./requirements/wordpress
     restart: always
@@ -28,21 +27,21 @@ services:
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
-      mariadb:
-        condition: service_healthy
+      - mariadb
+      # mariadb:
+      #   condition: service_healthy
     networks:
       nginx_wp_net:
         aliases:
           - wordpress_ip
       mariadb_wp_net:
-    healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
 
   mariadb:
-    init: true
     container_name: mariadb
     build: ./requirements/mariadb
     restart: always
@@ -54,21 +53,11 @@ services:
     #  - mariadb_data:/var/lib/mysql
     networks:
       - mariadb_wp_net
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # redis:
-  #   init: true
-  #   container_name: redis
-  #   image: 'redis:alpine'
-  #   restart: always
-  #   networks:
-  #     - mariadb_wp_net
-  #   expose:
-  #     - '6379'
+    # healthcheck:
+    #   test: ["CMD-SHELL", "mysqladmin ping"]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 3
 
 volumes:
   wp_nginx_data: # need to be in /home/ncasteln/data

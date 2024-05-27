@@ -15,6 +15,7 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/
 COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
 
 # entrypoint
+USER www-data
 WORKDIR /var/www/html
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD [ "/usr/sbin/php-fpm7.4", "--nodaemonize" ]

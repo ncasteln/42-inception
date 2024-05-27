@@ -14,3 +14,4 @@ mkdir -p /var/www/html/localhost/public_html
 chown -R www-data:www-data /var/log/
 chown -R www-data:www-data /var/www/
 chown -R www-data:www-data /run/php/
+

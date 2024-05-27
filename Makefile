@@ -17,7 +17,7 @@ WP_DIR		=	./srcs/requirements/wordpress
 # --------------------------------------------------------------------- COMPOSE
 up: build
 	@echo "$(G)* Creating containers...$(W)";
-	@cd ./srcs/ && docker compose up -d
+	@cd ./srcs/ && docker compose up
 
 build:
 	@echo "$(G)* Building the images of each service...$(W)";

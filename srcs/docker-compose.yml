@@ -23,7 +23,9 @@ services:
     build: ./requirements/wordpress
     restart: always
     secrets:
-      - wp_credentials
+      - wordpress_secrets
+      # - source: wp_credentials
+      #   target: /root/wp_credentials.txt
     expose:
       - '9000'
     volumes:
@@ -48,7 +50,7 @@ services:
     build: ./requirements/mariadb
     restart: always
     secrets:
-      - mariadb_credentials
+      - mariadb_secrets
     expose:
       - '3306'
     # volumes:
@@ -70,7 +72,7 @@ networks:
   mariadb_wp_net:
 
 secrets:
-  wp_credentials:
+  wordpress_secrets:
     file: ../secrets/wordpress/.env
-  mariadb_credentials:
+  mariadb_secrets:
     file: ../secrets/mariadb/.env

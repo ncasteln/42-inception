@@ -5,6 +5,10 @@ RUN apt-get update -y && apt-get install -y \
     php-fpm \
     php-mysqli
 
+# workaround for secrets ?
+# COPY .env /var/www/.env
+# RUN chown www-data:www-data /var/www/.env
+
 COPY tools/configure.sh /configure.sh
 RUN /configure.sh
 
@@ -13,8 +17,6 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/
 
 # wordpress installer
 COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
-
-# COPY ../../../secrets/wordpress/.env /
 
 # entrypoint
 USER www-data

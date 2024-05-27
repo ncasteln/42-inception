@@ -4,6 +4,7 @@
 
 WP_PATH='/var/www/html/localhost/public_html/'
 WP_SECRETS='/run/secrets/wordpress_secrets'
+# WP_SECRETS='/var/www/.env'
 
 wp core download --path="${WP_PATH}"
 
@@ -33,5 +34,8 @@ wp core install --url="$DOMAIN_NAME" \
   --admin_email="$ADMIN_EMAIL" \
   --path="$WP_PATH" \
   --skip-email
+
+# remove sensitive data
+# rm -rf "$WP_SECRETS";
 
 exec $@;

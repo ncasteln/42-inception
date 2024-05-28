@@ -17,15 +17,15 @@ WP_DIR		=	./srcs/requirements/wordpress
 # --------------------------------------------------------------------- COMPOSE
 up: build
 	@echo "$(G)* Creating containers...$(W)";
-	@cd ./srcs/ && docker compose up
+	cd ./srcs/ && docker compose up
 
 build:
 	@echo "$(G)* Building the images of each service...$(W)";
-	@cd ./srcs/ && docker compose build
+	cd ./srcs/ && docker compose build
 
 down:
 	@echo "$(G)* Removing containers...$(W)";
-	@cd ./srcs/ && docker compose down
+	cd ./srcs/ && docker compose down
 
 # ----------------------------------------------------------------------- NGINX
 nginx:

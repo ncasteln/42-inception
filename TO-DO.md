@@ -4,9 +4,6 @@
 	- Change hostname in the various places!
 	- How protect secrets: /run/secrets/...; remove init.sql (maybe possible in makefile)
 	- One or Two networks????
-	- healtchecks params
-	- network: how to set up? Possibilities: 
-		DEFINITIVE: give a name to the network, and use it inside www.conf and the others. check www.conf and start from there
 
 1) NGINX
 	**TO LEARN**

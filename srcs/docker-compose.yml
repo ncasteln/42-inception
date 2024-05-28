@@ -10,11 +10,10 @@ services:
     ports:
       - '443:443'
     depends_on:
-      - wordpress
-      # wordpress:
-      #   condition: service_healthy
+      wordpress:
+        condition: service_healthy
     networks:
-      - nginx_wp_net
+      - nginx_wordpress
 
   wordpress:
     container_name: wordpress
@@ -22,22 +21,20 @@ services:
     restart: always
     secrets:
       - wordpress_secrets
-    # expose:
-    #   - '9000'
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
-      - mariadb
-      # mariadb:
-      #   condition: service_healthy
+      mariadb:
+        condition: service_healthy
     networks:
-      nginx_wp_net:
-      mariadb_wp_net:
-    # healthcheck:
-    #   test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
+      - nginx_wordpress
+      - mariadb_wordpress
+    healthcheck:
+      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
+      start_period: 10s
+      interval: 2s
+      timeout: 2s
+      retries: 3
 
   mariadb:
     container_name: mariadb
@@ -45,16 +42,15 @@ services:
     restart: always
     secrets:
       - mariadb_secrets
-    expose:
-      - '3306'
     # volumes:
     #  - mariadb_data:/var/lib/mysql
     networks:
-      - mariadb_wp_net
+      - mariadb_wordpress
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping"]
-      interval: 5s
-      timeout: 5s
+      start_period: 5s
+      interval: 2s
+      timeout: 2s
       retries: 3
 
 volumes:
@@ -62,10 +58,10 @@ volumes:
   # mariadb_data: # need to be in /home/ncasteln/data
 
 networks:
-  nginx_wp_net:
-    name: nginx_wp
-  mariadb_wp_net:
-    name: mariadb_wp
+  nginx_wordpress:
+    name: inception_frontend
+  mariadb_wordpress:
+    name: inception_backend
 
 secrets:
   wordpress_secrets:

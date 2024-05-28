@@ -2,37 +2,34 @@
 
 # @param $@ /usr/sbin/php-fpm7.4 --nodaemonize is default argument provided by Dockerfile
 
-# if [ wp core is-installed --allow-root --path=/var/www/html/localhost/public_html ]
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
-  # !! !! !! !! !! !!
+P="\033[0;35m"
+W="\033[0m"
+# WP_SECRETS='/run/secrets/wordpress_secrets'
+DOMAIN_NAME=$(cat "${WP_SECRETS}" | grep 'DOMAIN_NAME' | awk -F '=' '{ print $2 }')
+WP_PATH="/var/www/html/${DOMAIN_NAME}/public_html/"
 
-WP_PATH='/var/www/html/localhost/public_html/'
-WP_SECRETS='/run/secrets/wordpress_secrets'
-# WP_SECRETS='/var/www/.env'
+if wp core is-installed --path="$WP_PATH"; then
+  echo -e "${P}*** [INCEPTION] Wordpress already installed ***${W}";
+  exec $@;
+fi
 
-wp core download --path="${WP_PATH}"
+echo -e "${P}*** [INCEPTION] Installing wordpress ***${W}"
+wp core download --path="$WP_PATH"
 
 # variable are in /run/secrets/wordpress_secrets
-WORDPRESS_DB_NAME=$(cat "${WP_SECRETS}" | grep 'WORDPRESS_DB_NAME' | awk -F '=' '{ print $2 }')
-WORDPRESS_DB_USER=$(cat "${WP_SECRETS}" | grep 'WORDPRESS_DB_USER' | awk -F '=' '{ print $2 }')
-WORDPRESS_DB_PASSWORD=$(cat "${WP_SECRETS}" | grep 'WORDPRESS_DB_PASSWORD' | awk -F '=' '{ print $2 }')
-WORDPRESS_DB_HOST=$(cat "${WP_SECRETS}" | grep 'WORDPRESS_DB_HOST' | awk -F '=' '{ print $2 }')
+DB_NAME=$(cat "${WP_SECRETS}" | grep 'DB_NAME' | awk -F '=' '{ print $2 }')
+DB_USER=$(cat "${WP_SECRETS}" | grep 'DB_USER' | awk -F '=' '{ print $2 }')
+DB_PASSWORD=$(cat "${WP_SECRETS}" | grep 'DB_PASSWORD' | awk -F '=' '{ print $2 }')
+DB_HOST=$(cat "${WP_SECRETS}" | grep 'DB_HOST' | awk -F '=' '{ print $2 }')
 
 # wp configuration file
 wp config create --path="$WP_PATH" \
-  --dbname="$WORDPRESS_DB_NAME" \
-  --dbuser="$WORDPRESS_DB_USER" \
-  --dbpass="$WORDPRESS_DB_PASSWORD" \
-  --dbhost="$WORDPRESS_DB_HOST"
+  --dbname="$DB_NAME" \
+  --dbuser="$DB_USER" \
+  --dbpass="$DB_PASSWORD" \
+  --dbhost="$DB_HOST"
 
 # wp installation
-DOMAIN_NAME=$(cat "${WP_SECRETS}" | grep 'DOMAIN_NAME' | awk -F '=' '{ print $2 }')
 ADMIN_USER=$(cat "${WP_SECRETS}" | grep 'ADMIN_USER' | awk -F '=' '{ print $2 }')
 ADMIN_PASSWORD=$(cat "${WP_SECRETS}" | grep 'ADMIN_PASSWORD' | awk -F '=' '{ print $2 }')
 ADMIN_EMAIL=$(cat "${WP_SECRETS}" | grep 'ADMIN_EMAIL' | awk -F '=' '{ print $2 }')
@@ -44,8 +41,5 @@ wp core install --url="$DOMAIN_NAME" \
   --admin_email="$ADMIN_EMAIL" \
   --path="$WP_PATH" \
   --skip-email
-
-# remove sensitive data
-# rm -rf "$WP_SECRETS";
 
 exec $@;

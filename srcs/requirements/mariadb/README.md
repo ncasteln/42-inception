@@ -2,26 +2,23 @@
 
 mariaDB is a fork of MySql, open-source relational database management system. While _relational_ db are structured in rown and columns, the _non-relational_ organize the data in docs, collections, graphs, in a more flexible and complex structure. Check (pros and cons)[https://www.hostinger.com/tutorials/mariadb-vs-mysql] of mariaDB and MySql.
 
-## Pre-training  
-Run a mariadb-server container and then a client using docker-hub images.
-```docker
-docker network create mariadb-network;
-
-docker run --name=mariadb-server --detach --network mariadb-network --env='MYSQL_ROOT_PASSWORD=myrootpassword' mariadb:latest;
-
-(optional) Try to populate the container: `docker exec -it mariadb-server mariadb -u root -p;
-
-docker run -it --rm --name=mariadb-client --network mariadb-network mariadb:latest mariadb -u root -h mariadb-server -p;
+## Pre-training
+Run a mariadb-server container and  after a client using docker-hub images.
+```bash
+docker network create mariadb-network;  
+docker run --name=mariadb-server --detach --network mariadb-network --env='MYSQL_ROOT_PASSWORD=myrootpassword' mariadb:latest;  
+(optional) Try to populate the container: `docker exec -it mariadb-server mariadb -u root -p;  
+docker run -it --rm --name=mariadb-client --network mariadb-network mariadb:latest mariadb -u root -h mariadb-server -p;  
 ```
 
 ## Configuration
-https://dev.mysql.com/doc/refman/8.0/en/option-files.html
-https://mariadb.com/kb/en/configuring-mariadb-with-option-files/#option-groups
-
 In _/etc/mysql/my.cnf_ we read the order in which the files and the rules are processed. What is done:
 - Create an _init.sql_ which initializes a custom database (necessary!).
 - Copy a custom _50-server.cnf_: under [mysqld] add _port_ and _socket_ rules, change _bind_address_ to 0.0.0.0. Under [server] add _init_file_.
 - Copy a custom _my.cnf_ file, in which port and socket are commented.
+
+https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+https://mariadb.com/kb/en/configuring-mariadb-with-option-files/#option-groups
 
 ### How to test it
 *mysqld* had a `--validate-config` flag which seems to don't work ad intended. To test if the db is working, we can run the mariadb-server and then access it using a mariadb-client container, which share a same _docker network_.

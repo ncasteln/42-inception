@@ -15,7 +15,7 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: build
+up:
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 

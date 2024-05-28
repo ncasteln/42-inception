@@ -1,6 +1,7 @@
 FROM debian:bullseye
 
-RUN apt-get update -y && apt-get install -y mariadb-server
+RUN apt-get update -y && apt-get install -y \
+    mariadb-server
 
 COPY conf/custom.cnf /etc/mysql/mariadb.conf.d/
 
@@ -8,7 +9,3 @@ COPY conf/custom.cnf /etc/mysql/mariadb.conf.d/
 COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD [ "mariadbd" ]
-
-# works
-# COPY conf/init.sql /etc/mysql/init.sql
-# ENTRYPOINT [ "mariadbd" ]

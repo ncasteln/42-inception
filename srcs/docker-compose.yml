@@ -4,7 +4,6 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
-    restart: always
     volumes:
       - wp_nginx_data:/var/www/html
     ports:
@@ -14,13 +13,11 @@ services:
         condition: service_healthy
     networks:
       - nginx_wordpress
+    restart: always
 
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
-    restart: always
-    secrets:
-      - wordpress_secrets
     volumes:
       - wp_nginx_data:/var/www/html
     depends_on:
@@ -35,15 +32,17 @@ services:
       interval: 2s
       timeout: 2s
       retries: 3
+    secrets:
+      - wordpress_secrets
+    environment:
+      WP_SECRETS: /run/secrets/wordpress_secrets
+    restart: always
 
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    restart: always
-    secrets:
-      - mariadb_secrets
-    # volumes:
-    #  - mariadb_data:/var/lib/mysql
+    volumes:
+      - mariadb_data:/var/lib/mysql
     networks:
       - mariadb_wordpress
     healthcheck:
@@ -52,10 +51,15 @@ services:
       interval: 2s
       timeout: 2s
       retries: 3
+    secrets:
+      - mariadb_secrets
+    environment:
+      MARIADB_SECRETS: /run/secrets/mariadb_secrets
+    restart: always
 
 volumes:
   wp_nginx_data: # need to be in /home/ncasteln/data
-  # mariadb_data: # need to be in /home/ncasteln/data
+  mariadb_data: # need to be in /home/ncasteln/data
 
 networks:
   nginx_wordpress:

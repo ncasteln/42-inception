@@ -11,8 +11,6 @@ if [ -d /var/lib/mysql/wp_database ]; then
 else
     echo -e "${P}*** [INCEPTION] Initializing Wordpress database and required user ***${W}";
 
-    # MARIADB_SECRETS='/run/secrets/mariadb_secrets'
-
     DB_NAME=$(cat "${MARIADB_SECRETS}" | grep 'DB_NAME' | awk -F '=' '{ print $2 }')
     DB_USER=$(cat "${MARIADB_SECRETS}" | grep 'DB_USER' | awk -F '=' '{ print $2 }')
     DB_PASSWORD=$(cat "${MARIADB_SECRETS}" | grep 'DB_PASSWORD' | awk -F '=' '{ print $2 }')

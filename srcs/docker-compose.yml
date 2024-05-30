@@ -35,10 +35,10 @@ services:
       WP_DOMAIN: ncasteln.42.fr
     healthcheck:
       test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/ncasteln.42.fr/public_html"]
-      start_period: 5s
+      start_period: 7s
       interval: 2s
-      timeout: 2s
-      retries: 3
+      timeout: 5s
+      retries: 5
     restart: always
 
   mariadb:
@@ -55,10 +55,10 @@ services:
       MARIADB_SECRETS: /run/secrets/mariadb_secrets
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping"]
-      start_period: 5s
+      start_period: 7s
       interval: 2s
-      timeout: 2s
-      retries: 3
+      timeout: 5s
+      retries: 5
     restart: always
 
 volumes:

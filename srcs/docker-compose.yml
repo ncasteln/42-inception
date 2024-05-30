@@ -72,7 +72,7 @@ volumes:
     name: mariadb_vol
     driver_opts:
       type: none
-      device: /home/ncasteln/data/mariadb_data
+      device: /home/ncasteln/data/db_data
       o: bind
 
 networks:

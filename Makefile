@@ -20,8 +20,6 @@ WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
 up: domain_check build
-	@echo "$(G)* Creating volume folders...$(W)";
-	@mkdir -p /home/ncasteln/data/mariadb_data /home/ncasteln/data/wp_data
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 

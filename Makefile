@@ -10,6 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
+# useful to check all ignored files
+# find . -type d | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
+# find . -type f | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
+
 NGINX_DIR	=	./srcs/requirements/nginx
 MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress

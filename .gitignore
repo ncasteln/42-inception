@@ -1,2 +1,7 @@
-secrets/
+secrets/wordpress/.env
+secrets/mariadb/.env
 **/.env
+official-imgs-test/
+*.md
+.vscode
+**/.vscode/

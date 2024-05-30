@@ -17,11 +17,11 @@ WP_DIR		=	./srcs/requirements/wordpress
 # --------------------------------------------------------------------- COMPOSE
 up: domain_check build
 	@echo "$(G)* Creating volume folders...$(W)";
-	@mkdir /home/${USER}/data/mariadb_data /home/${USER}/data/wp_data
+	@mkdir -p /home/ncasteln/data/mariadb_data /home/ncasteln/data/wp_data
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
-build: domain_check
+build:
 	@echo "$(G)* Building the images of each service...$(W)";
 	cd ./srcs/ && docker compose build
 
@@ -35,6 +35,7 @@ domain_check:
 	@echo "  - docker-compose.yml wordpress environment"
 	@echo "  - srcs/requirements/wordpress/conf/pre-configure.sh"
 	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf$(W)"
+	@echo "Did you update the domain names? [y/N] " && read answer && [ $${answer:-N} = y ]
 
 # ----------------------------------------------------------------------- NGINX
 nginx:

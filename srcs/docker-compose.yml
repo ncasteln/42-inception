@@ -34,9 +34,9 @@ services:
       - wordpress_secrets
     environment:
       WP_SECRETS: /run/secrets/wordpress_secrets
-      WP_DOMAIN: localhost
+      WP_DOMAIN: ncasteln.42.fr
     healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/localhost/public_html"]
+      test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/ncasteln.42.fr/public_html"]
       start_period: 5s
       interval: 2s
       timeout: 2s
@@ -68,13 +68,13 @@ volumes:
     name: wp_nginx_vol
     driver_opts:
       type: none
-      device: /home/${USER}/data/wp_data
+      device: /home/ncasteln/data/wp_data
       o: bind
   mariadb_vol:
     name: mariadb_vol
     driver_opts:
       type: none
-      device: /home/${USER}/data/mariadb_data
+      device: /home/ncasteln/data/mariadb_data
       o: bind
 
 networks:

@@ -33,8 +33,9 @@ domain_check:
 	@echo "$(R)* [INCEPTION] Before composing make sure to have updated WP_DOMAIN in:"
 	@echo "  - docker-compose.yml wordpress healthcheck test"
 	@echo "  - docker-compose.yml wordpress environment"
-	@echo "  - srcs/requirements/wordpress/conf/pre-configure.sh"
-	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf$(W)"
+	@echo "  - srcs/requirements/wordpress/tools/pre-configure.sh"
+	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf"
+	@echo "  - /etc/hosts for 127.0.0.1$(W)"
 	@echo "Did you update the domain names? [y/N] " && read answer && [ $${answer:-N} = y ]
 
 # ----------------------------------------------------------------------- NGINX

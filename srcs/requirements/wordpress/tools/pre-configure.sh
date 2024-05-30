@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WP_DOMAIN=localhost
+
 # required by php
 mkdir --parents /run/php/php-fpm
 touch /run/php/php-fpm/php7.4-fpm.pid
@@ -10,8 +12,7 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # give ownership to www-data
-mkdir -p /var/www/html/localhost/public_html
-chown -R www-data:www-data /var/log/
+mkdir --parents "/var/www/html/${WP_DOMAIN}/public_html"
 chown -R www-data:www-data /var/www/
+chown -R www-data:www-data /var/log/
 chown -R www-data:www-data /run/php/
-

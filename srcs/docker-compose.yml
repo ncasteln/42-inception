@@ -1,11 +1,15 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
+version: '2.2.3'
+
 services:
   nginx:
+    init: true
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - wp_nginx_data:/var/www/html
+      - ../data/nginx-wp/:/var/www/html
+      # - wp_nginx_data:/var/www/html
     ports:
       - '443:443'
     depends_on:
@@ -16,50 +20,55 @@ services:
     restart: always
 
   wordpress:
+    init: true
     container_name: wordpress
     build: ./requirements/wordpress
     volumes:
-      - wp_nginx_data:/var/www/html
+      - ../data/nginx-wp/:/var/www/html
+      # - wp_nginx_data:/var/www/html
     depends_on:
       mariadb:
         condition: service_healthy
     networks:
       - nginx_wordpress
       - mariadb_wordpress
-    healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed --allow-root --path=/var/www/html/localhost/public_html"]
-      start_period: 10s
-      interval: 2s
-      timeout: 2s
-      retries: 3
     secrets:
       - wordpress_secrets
     environment:
       WP_SECRETS: /run/secrets/wordpress_secrets
+      WP_DOMAIN: localhost
+    healthcheck:
+      test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/localhost/public_html"]
+      start_period: 5s
+      interval: 2s
+      timeout: 2s
+      retries: 3
     restart: always
 
   mariadb:
+    init: true
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - ../data/nginx-wp/:/var/www/html
+      # - mariadb_data:/var/lib/mysql
     networks:
       - mariadb_wordpress
+    secrets:
+      - mariadb_secrets
+    environment:
+      MARIADB_SECRETS: /run/secrets/mariadb_secrets
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping"]
       start_period: 5s
       interval: 2s
       timeout: 2s
       retries: 3
-    secrets:
-      - mariadb_secrets
-    environment:
-      MARIADB_SECRETS: /run/secrets/mariadb_secrets
     restart: always
 
-volumes:
-  wp_nginx_data: # need to be in /home/ncasteln/data
-  mariadb_data: # need to be in /home/ncasteln/data
+# volumes:
+#   wp_nginx_data:
+#   mariadb_data:
 
 networks:
   nginx_wordpress:

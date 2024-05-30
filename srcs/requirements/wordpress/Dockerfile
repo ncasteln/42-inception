@@ -5,12 +5,8 @@ RUN apt-get update -y && apt-get install -y \
     php-fpm \
     php-mysqli
 
-# workaround for secrets ?
-# COPY .env /var/www/.env
-# RUN chown www-data:www-data /var/www/.env
-
-COPY tools/configure.sh /configure.sh
-RUN /configure.sh
+COPY tools/pre-configure.sh /pre-configure.sh
+RUN /pre-configure.sh
 
 # php configuration
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/

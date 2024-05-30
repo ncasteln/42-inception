@@ -1,14 +1,13 @@
 #!/bin/bash
 
+# user logged is www-data
 # @param $@ /usr/sbin/php-fpm7.4 --nodaemonize is default argument provided by Dockerfile
 
 P="\033[0;35m"
 W="\033[0m"
-# WP_SECRETS='/run/secrets/wordpress_secrets'
-DOMAIN_NAME=$(cat "${WP_SECRETS}" | grep 'DOMAIN_NAME' | awk -F '=' '{ print $2 }')
-WP_PATH="/var/www/html/${DOMAIN_NAME}/public_html/"
+WP_PATH="/var/www/html/${WP_DOMAIN}/public_html"
 
-if wp core is-installed --path="$WP_PATH"; then
+if wp core is-installed --path="$WP_PATH" > /dev/null 2>&1; then
   echo -e "${P}*** [INCEPTION] Wordpress already installed ***${W}";
   exec $@;
 fi
@@ -34,7 +33,7 @@ ADMIN_USER=$(cat "${WP_SECRETS}" | grep 'ADMIN_USER' | awk -F '=' '{ print $2 }'
 ADMIN_PASSWORD=$(cat "${WP_SECRETS}" | grep 'ADMIN_PASSWORD' | awk -F '=' '{ print $2 }')
 ADMIN_EMAIL=$(cat "${WP_SECRETS}" | grep 'ADMIN_EMAIL' | awk -F '=' '{ print $2 }')
 
-wp core install --url="$DOMAIN_NAME" \
+wp core install --url="$WP_DOMAIN" \
   --title='inception' \
   --admin_user="$ADMIN_USER" \
   --admin_password="$ADMIN_PASSWORD" \

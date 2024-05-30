@@ -15,17 +15,24 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up:
+up: domain_check
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
-build:
+build: domain_check
 	@echo "$(G)* Building the images of each service...$(W)";
 	cd ./srcs/ && docker compose build
 
 down:
 	@echo "$(G)* Removing containers...$(W)";
 	cd ./srcs/ && docker compose down
+
+domain_check:
+	@echo "$(R)* [INCEPTION] Before composing make sure to have updated WP_DOMAIN in:"
+	@echo "  - docker-compose.yml wordpress healthcheck test"
+	@echo "  - docker-compose.yml wordpress environment"
+	@echo "  - srcs/requirements/wordpress/conf/pre-configure.sh"
+	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf$(W)"
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -145,4 +152,4 @@ N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down
+mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check

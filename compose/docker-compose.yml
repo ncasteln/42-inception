@@ -6,7 +6,7 @@ services:
       - wordpress
     image: nginx:latest
     volumes:
-      - ./nginx:/etc/nginx/conf.d # substitute the default config
+      - ./nginx:/etc/nginx/conf.d # substitute the default config / thefolder is really shared
       - wp-nginx-vol:/var/www/html
     ports:
       - '8080:80'

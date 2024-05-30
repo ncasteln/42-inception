@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nico <nico@student.42.fr>                  +#+  +:+       +#+         #
+#    By: nico <ncasteln@student.42.fr>                  +#+  +:+       +#+     #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/23 17:47:58 by nico             ###   ########.fr        #
+#    Updated: 2024/05/23 17:47:58 by ncasteln             ###   ########.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: domain_check
+up: domain_check start build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
@@ -152,4 +152,4 @@ N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check
+mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check hard

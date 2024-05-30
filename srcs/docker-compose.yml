@@ -1,6 +1,6 @@
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md
 
-version: '2.2.3'
+# version: '2.2.3'
 
 services:
   nginx:
@@ -8,15 +8,14 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - ../data/nginx-wp/:/var/www/html
-      # - wp_nginx_data:/var/www/html
+      - wp_nginx_data:/var/www/html
     ports:
       - '443:443'
     depends_on:
       wordpress:
         condition: service_healthy
     networks:
-      - nginx_wordpress
+      - nginx_wordpress_net
     restart: always
 
   wordpress:
@@ -24,14 +23,13 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress
     volumes:
-      - ../data/nginx-wp/:/var/www/html
-      # - wp_nginx_data:/var/www/html
+      - wp_nginx_data:/var/www/html
     depends_on:
       mariadb:
         condition: service_healthy
     networks:
-      - nginx_wordpress
-      - mariadb_wordpress
+      - nginx_wordpress_net
+      - mariadb_wordpress_net
     secrets:
       - wordpress_secrets
     environment:
@@ -50,10 +48,9 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - ../data/nginx-wp/:/var/www/html
-      # - mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
-      - mariadb_wordpress
+      - mariadb_wordpress_net
     secrets:
       - mariadb_secrets
     environment:
@@ -66,14 +63,24 @@ services:
       retries: 3
     restart: always
 
-# volumes:
-#   wp_nginx_data:
-#   mariadb_data:
+volumes:
+  wp_nginx_data:
+    name: website
+    driver_opts:
+      type: none
+      device: #
+      o: bind
+  mariadb_data:
+    name: database
+    driver_opts:
+      type: none
+      device: #
+      o: bind
 
 networks:
-  nginx_wordpress:
+  nginx_wordpress_net:
     name: inception_frontend
-  mariadb_wordpress:
+  mariadb_wordpress_net:
     name: inception_backend
 
 secrets:

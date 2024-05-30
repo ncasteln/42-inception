@@ -8,7 +8,7 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - wp_nginx_data:/var/www/html
+      - wp_nginx_vol:/var/www/html
     ports:
       - '443:443'
     depends_on:
@@ -23,7 +23,7 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress
     volumes:
-      - wp_nginx_data:/var/www/html
+      - wp_nginx_vol:/var/www/html
     depends_on:
       mariadb:
         condition: service_healthy
@@ -48,7 +48,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_vol:/var/lib/mysql
     networks:
       - mariadb_wordpress_net
     secrets:
@@ -64,17 +64,17 @@ services:
     restart: always
 
 volumes:
-  wp_nginx_data:
-    name: website
+  wp_nginx_vol:
+    name: wp_nginx_vol
     driver_opts:
       type: none
-      device: #
+      device: /home/${USER}/data/wp_data
       o: bind
-  mariadb_data:
-    name: database
+  mariadb_vol:
+    name: mariadb_vol
     driver_opts:
       type: none
-      device: #
+      device: /home/${USER}/data/mariadb_data
       o: bind
 
 networks:

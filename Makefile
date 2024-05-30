@@ -15,7 +15,9 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: domain_check start build
+up: domain_check build
+	@echo "$(G)* Creating volume folders...$(W)";
+	@mkdir /home/${USER}/data/mariadb_data /home/${USER}/data/wp_data
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 

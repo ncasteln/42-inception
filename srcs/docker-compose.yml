@@ -6,9 +6,7 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - /home/ncasteln/data/wp_data:/var/www/html
-    # volumes:
-    #   - wp_nginx_vol:/var/www/html
+      - wp_nginx_vol:/var/www/html
     ports:
       - '443:443'
     depends_on:
@@ -24,9 +22,7 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress
     volumes:
-      - /home/ncasteln/data/wp_data:/var/www/html
-    # volumes:
-    #   - wp_nginx_vol:/var/www/html
+      - wp_nginx_vol:/var/www/html
     depends_on:
       mariadb:
         condition: service_healthy
@@ -52,9 +48,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - /home/ncasteln/data/db_data:/var/lib/mysql
-    # volumes:
-    #   - mariadb_vol:/var/lib/mysql
+      - mariadb_vol:/var/lib/mysql
     networks:
       - mariadb_wordpress_net
     secrets:
@@ -74,15 +68,27 @@ services:
 #   wp_nginx_vol:
 #     name: wp_nginx_vol
 #     driver_opts:
-#       type: none
+#       type: bind
 #       device: /home/ncasteln/data/wp_data
-#       o: bind
 #   mariadb_vol:
 #     name: mariadb_vol
 #     driver_opts:
-#       type: none
+#       type: bind
 #       device: /home/ncasteln/data/db_data
-#       o: bind
+
+volumes:
+  wp_nginx_vol:
+    name: wp_nginx_vol
+    driver_opts:
+      type: none
+      device: /home/ncasteln/data/wp_data
+      o: bind
+  mariadb_vol:
+    name: mariadb_vol
+    driver_opts:
+      type: none
+      device: /home/ncasteln/data/db_data
+      o: bind
 
 # volumes:
 #   wp_nginx_vol:

@@ -9,6 +9,10 @@ WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
 up: domain_check build
+	@echo "$(G)* Creating /data/ folders for the volumes...$(W)";
+	@mkdir -p /home/ncasteln/data/wp_data
+	@mkdir -p /home/ncasteln/data/db_data
+	@chown -R $(USER):$(USER)
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
@@ -101,6 +105,7 @@ clean-net:
 	fi
 
 fclean: stop clean clean-img clean-vol clean-net
+	@rm -rfd /home/ncasteln/data/
 
 # ----------------------------------------------------------------------- UTILS
 display:

@@ -33,10 +33,11 @@ down:
 
 domain_check:
 	@echo "$(R)* [INCEPTION] Before composing make sure to have updated WP_DOMAIN in:"
-	@echo "  - docker-compose.yml wordpress healthcheck test"
-	@echo "  - docker-compose.yml wordpress environment"
+	@echo "  - docker-compose.yml wordpress @healthcheck"
+	@echo "  - docker-compose.yml wordpress @environment"
 	@echo "  - srcs/requirements/wordpress/tools/pre-configure.sh"
-	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf"
+	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf @server_name"
+	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf @root"
 	@echo "  - /etc/hosts for 127.0.0.1$(W)"
 	@echo "Did you update the domain names? [y/N] " && read answer && [ $${answer:-N} = y ]
 
@@ -158,4 +159,4 @@ N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check hard
+mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check

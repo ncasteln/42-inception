@@ -2,7 +2,7 @@
 
 services:
   nginx:
-    init: true
+    image: nginx
     container_name: nginx
     build: ./requirements/nginx
     volumes:
@@ -15,9 +15,10 @@ services:
     networks:
       - nginx_wordpress_net
     restart: always
+    init: true
 
   wordpress:
-    init: true
+    image: wordpress
     container_name: wordpress
     build: ./requirements/wordpress
     volumes:
@@ -40,9 +41,10 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+    init: true
 
   mariadb:
-    init: true
+    image: mariadb
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
@@ -60,6 +62,7 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+    init: true
 
 volumes:
   wp_nginx_vol:
@@ -74,6 +77,12 @@ volumes:
       type: none
       device: /home/ncasteln/data/db_data
       o: bind
+
+# volumes:
+#   wp_nginx_vol:
+#     name: wp_nginx_vol
+#   mariadb_vol:
+#     name: mariadb_vol
 
 networks:
   nginx_wordpress_net:

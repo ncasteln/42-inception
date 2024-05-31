@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: nico <ncasteln@student.42.fr>                  +#+  +:+       +#+     #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/04/22 14:22:00 by ncasteln          #+#    #+#              #
-#    Updated: 2024/05/23 17:47:58 by ncasteln             ###   ########.fr    #
-#                                                                              #
-# **************************************************************************** #
-
 # useful to check all ignored files
 # find . -type d | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 # find . -type f | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
@@ -32,14 +20,7 @@ down:
 	cd ./srcs/ && docker compose down
 
 domain_check:
-	@echo "$(R)* [INCEPTION] Before composing make sure to have updated WP_DOMAIN in:"
-	@echo "  - docker-compose.yml wordpress @healthcheck"
-	@echo "  - docker-compose.yml wordpress @environment"
-	@echo "  - srcs/requirements/wordpress/tools/pre-configure.sh"
-	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf @server_name"
-	@echo "  - srcs/requirements/nginx/conf/ncasteln.42.fr.conf @root"
-	@echo "  - /etc/hosts for 127.0.0.1$(W)"
-	@echo "Did you update the domain names? [y/N] " && read answer && [ $${answer:-N} = y ]
+	@echo "$(R)* [INCEPTION] Did you updated the /etc/hosts file?$(W) [y/n] " && read answer && [ $${answer:-N} = y ]
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -119,7 +100,6 @@ clean-net:
 	fi
 
 fclean: stop clean clean-img clean-vol clean-net
-# @docker builder prune
 
 # ----------------------------------------------------------------------- UTILS
 display:
@@ -159,4 +139,4 @@ N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont  wp wp-cont hclean clean-net clean-vol build up down domain_check
+mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down domain_check

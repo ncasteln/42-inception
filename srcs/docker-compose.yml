@@ -64,18 +64,6 @@ services:
     restart: always
     init: true
 
-# volumes:
-#   wp_nginx_vol:
-#     name: wp_nginx_vol
-#     driver_opts:
-#       type: bind
-#       device: /home/ncasteln/data/wp_data
-#   mariadb_vol:
-#     name: mariadb_vol
-#     driver_opts:
-#       type: bind
-#       device: /home/ncasteln/data/db_data
-
 volumes:
   wp_nginx_vol:
     name: wp_nginx_vol
@@ -89,12 +77,6 @@ volumes:
       type: none
       device: /home/ncasteln/data/db_data
       o: bind
-
-# volumes:
-#   wp_nginx_vol:
-#     name: wp_nginx_vol
-#   mariadb_vol:
-#     name: mariadb_vol
 
 networks:
   nginx_wordpress_net:

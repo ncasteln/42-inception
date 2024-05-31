@@ -8,11 +8,7 @@ MARIADB_DIR	=	./srcs/requirements/mariadb
 WP_DIR		=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: domain_check build
-	@echo "$(G)* Creating /data/ folders for the volumes...$(W)";
-	@mkdir -p /home/ncasteln/data/wp_data
-	@mkdir -p /home/ncasteln/data/db_data
-	@chown -R $(USER):$(USER)
+up: check build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
@@ -24,8 +20,9 @@ down:
 	@echo "$(G)* Removing containers...$(W)";
 	cd ./srcs/ && docker compose down
 
-domain_check:
+check:
 	@echo "$(R)* [INCEPTION] Did you updated the /etc/hosts file?$(W) [y/n] " && read answer && [ $${answer:-N} = y ]
+	@echo "$(R)* [INCEPTION] Do you have the /home/ncasteln/data/wp_data and /home/ncasteln/data/db_data folders?$(W) [y/n] " && read answer && [ $${answer:-N} = y ]
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -105,7 +102,7 @@ clean-net:
 	fi
 
 fclean: stop clean clean-img clean-vol clean-net
-	@rm -rfd /home/ncasteln/data/
+	@rm -rfd /home/$(USER)/data/
 
 # ----------------------------------------------------------------------- UTILS
 display:
@@ -145,4 +142,4 @@ N	=	\033[1;30m
 SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down domain_check
+mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down check

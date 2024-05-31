@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# useful commands to check database contents:
-# mariadb -uroot -pmyrootpassword  -e "SELECT User, Host FROM mysql.user;"
-
 P="\033[0;35m"
 W="\033[0m"
 

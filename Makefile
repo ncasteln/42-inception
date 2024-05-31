@@ -1,4 +1,5 @@
 # useful to check all ignored files
+# git log --all --full-history -- "**/.env.*"
 # find . -type d | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 # find . -type f | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 

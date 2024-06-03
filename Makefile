@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 12:38:03 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/03 13:00:27 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,12 +53,17 @@ volume:
 		mkdir -p $(DATA_FOLDER)/data/wp_data $(DATA_FOLDER)/data/db_data; \
 	fi;
 
+secrets:
+	@./create-env.sh
+
 check:
 	@echo "$(R)* Before running inception, make sure consider the followings: ";
 	@echo "- The default user under which inception will be run is ncasteln, \
 	if you want to change it you have to do it manually";
 	@echo "- By running inception 2 volumes will be created and mounted at $(DATA_FOLDER)/data/, \
 	if you want to change it you have to do it manually in this Makefile and in docker-compose.yml";
+	@echo "- You need to create 2 files to hold the variables needed by mariadb and wordpress \
+	(run make file to pre-compile the 2 .env file, complete them and move into the specified folder)";
 	@echo "- To see the wordpress page you need to change the /etc/hosts file";
 	@echo "Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
@@ -186,4 +191,4 @@ SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
 mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down check \
-volume reset
+volume reset secrets

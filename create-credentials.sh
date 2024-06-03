@@ -4,7 +4,15 @@ G="\033[0;32m";
 R="\033[0;31m"
 W="\033[0m";
 
-echo -e "${G}* Shared variables${W}";
+if [[ -f ./secrets/mariadb/.env || -f ./secrets/mariadb/.env ]]; then
+	echo -en "${G}* Credentials already exist, do you want to reset them?${W} " && read -p "[y/n] " ANSWER
+	if [ "$ANSWER" != "y" ]; then
+		exit 0;
+	fi
+fi
+
+echo -e "${G}* Creating credentials..."
+echo -e "* Mariadb and wordpress variables${W}";
 
 while [ -z "$DB_USER" ]
 do read -p "Username: " DB_USER; done;

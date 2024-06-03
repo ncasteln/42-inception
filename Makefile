@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
+#    By: nico <nico@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 16:21:33 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/03 22:14:52 by nico             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ MARIADB_DIR			=	./srcs/requirements/mariadb
 WP_DIR				=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: secrets build
+up: check secrets volumes build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
-build: check volumes
+build:
 	@echo "$(G)* Building the images of each service...$(W)";
 	cd ./srcs/ && docker compose build;
 
@@ -34,43 +34,20 @@ down:
 	cd ./srcs/ && docker compose down;
 
 volumes:
-	@if [[ -d $(DATA_FOLDER)/data/wp_data || -d $(DATA_FOLDER)/data/db_data ]]; then \
-		echo "$(Y)* Volume folders already present in /home/ncasteln. Do you want to continue? $(W) [y/n]" && read VOL_ANSWER; \
-		if [[ $$VOL_ANSWER != "y" ]]; then \
-			echo "$(R)* Do you want to reset the data? [ATTENTION!] This action will erase all the related data:\n - The folders: $(DATA_FOLDER)/data/wp_data and $(DATA_FOLDER)/data/db_data;\n - The volumes: wp_nginx_vol and mariadb_vol $(W) [y/n]" && read RM_ANSWER; \
-			if [[ $$RM_ANSWER == "y" ]]; then \
-				echo "$(G)* Removing pre-existing data volumes...$(W)"; \
-				if [ $$(docker volume ls | wc -l) -ge 1 ]; then \
-					docker volume rm mariadb_vol; \
-					docker volume rm wp_nginx_vol; \
-				fi; \
-				echo "$(G)* Removing pre-existing data folders...$(W)"; \
-				rm -rd $(DATA_FOLDER)/data/wp_data $(DATA_FOLDER)/data/db_data; \
-			fi; \
-		fi; \
-	else \
-		echo "$(G)* Creating volume folder in $(DATA_FOLDER)/data/...$(W)"; \
-		mkdir -p $(DATA_FOLDER)/data/wp_data $(DATA_FOLDER)/data/db_data; \
-	fi;
+	@./create-folders.sh $(DATA_FOLDER)
 
 secrets:
-	@if [[ -f ./secrets/mariadb/.env || -f ./secrets/wordpress/.env ]]; then \
-		echo "$(G)* Secrets already created..."; \
-	else \
-		echo "$(G)* Creating plain .env files..."; \
-		./create-env.sh; \
-	fi;
+	@./create-credentials.sh
 
 check:
-	@echo "$(R)* Before running inception, consider the followings: ";
+	@echo "$(Y)* Before running inception, consider the followings: ";
 	@echo "$(W)- The default user under which inception will be run is $(B)ncasteln$(W), \
-	if you want to change it you have to do it manually";
-	@echo "- By running inception 2 volumes will be created and mounted at $(B)$(DATA_FOLDER)/data/$(W), \
-	if you want to change it you have to do it manually in this Makefile and in docker-compose.yml";
-	@echo "- You need to create 2 files to hold the $(B)secrets$(W) needed by mariadb and wordpress \
-	(run make file to create 2 pre-compiled empty .env file, complete them and move into the folder \
-	specified under the docker-compose.yml)";
-	@echo "- To see the wordpress page you need to change the $(B)/etc/hosts$(W) file";
+	If you want to change it you have to do it manually";
+	@echo "- To run inception 2 volumes are needed. A script will do it for you and create them \
+	under $(B)$(DATA_FOLDER)/data/$(W). If you want to change it you have to do it manually";
+	@echo "- To run it alo 2 files which hold the $(B)credentials$(W) are necessary. A script \
+	will help you to create them. Obviously this is just for learning pourpose.";
+	@echo "- To see the wordpress correctly page you need to change the $(B)/etc/hosts$(W) file";
 	@echo "$(Y)Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
 # ----------------------------------------------------------------------- NGINX

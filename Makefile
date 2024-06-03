@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 13:00:27 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/03 13:12:03 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,18 +54,24 @@ volume:
 	fi;
 
 secrets:
-	@./create-env.sh
+	@if [[ -f ./secrets/mariadb/.env || -f ./secrets/wordpress/.env ]]; then \
+		echo "$(G)* Secrets already created..."; \
+	else \
+		echo "$(G)* Creating plain .env files..."; \
+		./create-env.sh; \
+	fi;
 
 check:
-	@echo "$(R)* Before running inception, make sure consider the followings: ";
-	@echo "- The default user under which inception will be run is ncasteln, \
+	@echo "$(R)* Before running inception, consider the followings: ";
+	@echo "$(W)- The default user under which inception will be run is $(B)ncasteln$(W), \
 	if you want to change it you have to do it manually";
-	@echo "- By running inception 2 volumes will be created and mounted at $(DATA_FOLDER)/data/, \
+	@echo "- By running inception 2 volumes will be created and mounted at $(B)$(DATA_FOLDER)/data/$(W), \
 	if you want to change it you have to do it manually in this Makefile and in docker-compose.yml";
-	@echo "- You need to create 2 files to hold the variables needed by mariadb and wordpress \
-	(run make file to pre-compile the 2 .env file, complete them and move into the specified folder)";
-	@echo "- To see the wordpress page you need to change the /etc/hosts file";
-	@echo "Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
+	@echo "- You need to create 2 files to hold the $(B)secrets$(W) needed by mariadb and wordpress \
+	(run make file to create 2 pre-compiled empty .env file, complete them and move into the folder \
+	specified under the docker-compose.yml)";
+	@echo "- To see the wordpress page you need to change the $(B)/etc/hosts$(W) file";
+	@echo "$(Y)Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
 # ----------------------------------------------------------------------- NGINX
 nginx:

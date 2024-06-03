@@ -70,13 +70,13 @@ volumes:
     driver_opts:
       type: volume
       o: bind
-      device: ${HOME}/data/wp_data
+      device: /home/ncasteln/data/wp_data
   mariadb_vol:
     name: mariadb_vol
     driver_opts:
       type: volume
       o: bind
-      device: ${HOME}/data/db_data
+      device: /home/ncasteln/data/db_data
 
 networks:
   nginx_wordpress_net:

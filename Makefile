@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/06/03 09:23:27 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 11:18:17 by ncasteln         ###   ########.fr        #
+#    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
+#    Updated: 2024/06/03 12:38:03 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,10 @@
 # find . -type d | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 # find . -type f | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 
-NGINX_DIR	=	./srcs/requirements/nginx
-MARIADB_DIR	=	./srcs/requirements/mariadb
-WP_DIR		=	./srcs/requirements/wordpress
+DATA_FOLDER			=	/home/ncasteln
+NGINX_DIR			=	./srcs/requirements/nginx
+MARIADB_DIR			=	./srcs/requirements/mariadb
+WP_DIR				=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
 up: build
@@ -33,10 +34,10 @@ down:
 	cd ./srcs/ && docker compose down;
 
 volume:
-	@if [[ -d $(HOME)/data/wp_data || -d $(HOME)/data/db_data ]]; then \
-		echo "$(Y)* Volume folders already present in $(HOME). Do you want to continue? $(W) [y/n]" && read VOL_ANSWER; \
+	@if [[ -d $(DATA_FOLDER)/data/wp_data || -d $(DATA_FOLDER)/data/db_data ]]; then \
+		echo "$(Y)* Volume folders already present in /home/ncasteln. Do you want to continue? $(W) [y/n]" && read VOL_ANSWER; \
 		if [[ $$VOL_ANSWER != "y" ]]; then \
-			echo "$(R)* Do you want to reset the data? [ATTENTION!] This action will erase all the related data:\n - The folders: $(HOME)/data/wp_data and $(HOME)/data/db_data;\n - The volumes: wp_nginx_vol and mariadb_vol $(W) [y/n]" && read RM_ANSWER; \
+			echo "$(R)* Do you want to reset the data? [ATTENTION!] This action will erase all the related data:\n - The folders: $(DATA_FOLDER)/data/wp_data and $(DATA_FOLDER)/data/db_data;\n - The volumes: wp_nginx_vol and mariadb_vol $(W) [y/n]" && read RM_ANSWER; \
 			if [[ $$RM_ANSWER == "y" ]]; then \
 				echo "$(G)* Removing pre-existing data volumes...$(W)"; \
 				if [ $$(docker volume ls | wc -l) -ge 1 ]; then \
@@ -44,16 +45,22 @@ volume:
 					docker volume rm wp_nginx_vol; \
 				fi; \
 				echo "$(G)* Removing pre-existing data folders...$(W)"; \
-				rm -rd $(HOME)/data/wp_data $(HOME)/data/db_data; \
+				rm -rd $(DATA_FOLDER)/data/wp_data $(DATA_FOLDER)/data/db_data; \
 			fi; \
 		fi; \
 	else \
-		echo "$(G)* Creating volume folder in $(HOME)/data/...$(W)"; \
-		mkdir -p $(HOME)/data/wp_data $(HOME)/data/db_data; \
+		echo "$(G)* Creating volume folder in $(DATA_FOLDER)/data/...$(W)"; \
+		mkdir -p $(DATA_FOLDER)/data/wp_data $(DATA_FOLDER)/data/db_data; \
 	fi;
 
 check:
-	@echo "$(Y)* [INCEPTION] Did you updated the /etc/hosts file?$(W) [y/n] " && read CHECK_ASWER && [ $${CHECK_ASWER:-N} = y ]
+	@echo "$(R)* Before running inception, make sure consider the followings: ";
+	@echo "- The default user under which inception will be run is ncasteln, \
+	if you want to change it you have to do it manually";
+	@echo "- By running inception 2 volumes will be created and mounted at $(DATA_FOLDER)/data/, \
+	if you want to change it you have to do it manually in this Makefile and in docker-compose.yml";
+	@echo "- To see the wordpress page you need to change the /etc/hosts file";
+	@echo "Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -133,6 +140,7 @@ clean-net:
 	fi
 
 fclean: stop clean clean-img clean-vol clean-net
+	@rm -rfd $(DATA_FOLDER)/data/
 
 reset: fclean
 	docker system prune;

@@ -56,7 +56,7 @@ services:
     environment:
       MARIADB_SECRETS: /run/secrets/mariadb_secrets
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping"]
+      test: [ "CMD-SHELL", "mysqladmin ping" ]
       start_period: 7s
       interval: 2s
       timeout: 5s
@@ -68,15 +68,15 @@ volumes:
   wp_nginx_vol:
     name: wp_nginx_vol
     driver_opts:
-      type: none
-      device: /home/ncasteln/data/wp_data
+      type: volume
       o: bind
+      device: ${HOME}/data/wp_data
   mariadb_vol:
     name: mariadb_vol
     driver_opts:
-      type: none
-      device: /home/ncasteln/data/db_data
+      type: volume
       o: bind
+      device: ${HOME}/data/db_data
 
 networks:
   nginx_wordpress_net:

@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 13:12:03 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/03 14:40:25 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ up: build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 
-build: check volume
+build: check volumes
 	@echo "$(G)* Building the images of each service...$(W)";
 	cd ./srcs/ && docker compose build;
 
@@ -33,7 +33,7 @@ down:
 	@echo "$(G)* Removing containers...$(W)";
 	cd ./srcs/ && docker compose down;
 
-volume:
+volumes:
 	@if [[ -d $(DATA_FOLDER)/data/wp_data || -d $(DATA_FOLDER)/data/db_data ]]; then \
 		echo "$(Y)* Volume folders already present in /home/ncasteln. Do you want to continue? $(W) [y/n]" && read VOL_ANSWER; \
 		if [[ $$VOL_ANSWER != "y" ]]; then \
@@ -197,4 +197,4 @@ SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
 mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down check \
-volume reset secrets
+volumes reset secrets

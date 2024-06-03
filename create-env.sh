@@ -56,14 +56,11 @@ do
     fi
 done;
 
-while [ -z $ADMIN_EMAIL ]
-do read -p "Admin email: " ADMIN_EMAIL; done;
-
 echo -e "\
 DB_USER=$DB_USER\n\
 DB_PASSWORD=$DB_PASSWORD\n\
 DB_NAME=wp_$DB_NAME\n\
-DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD\n" > ./joke; # ---- ---- ---- ---- ---- ---- change
+DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD\n" > $MARIADB_SECRET_FOLDER;
 
 echo -e "\
 DB_USER=$DB_USER\n\
@@ -72,4 +69,4 @@ DB_NAME=wp_$DB_NAME\n\
 DB_HOST=mariadb:3306\n\
 ADMIN_USER=$ADMIN_USER\n\
 ADMIN_PASSWORD=$ADMIN_PASSWORD\n\
-ADMIN_EMAIL=$ADMIN_EMAIL" > ./joki; # ---- ---- ---- ---- ---- ---- change
+ADMIN_EMAIL=$ADMIN_USER@my-company.com" > $WORDPRESS_SECRET_FOLDER;

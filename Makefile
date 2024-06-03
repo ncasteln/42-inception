@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/03 14:40:25 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/03 15:48:44 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ MARIADB_DIR			=	./srcs/requirements/mariadb
 WP_DIR				=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: build
+up: secrets build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
 

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-WP_DOMAIN=ncasteln.42.fr
-
 # required by php
 mkdir --parents /run/php/php-fpm
 touch /run/php/php-fpm/php7.4-fpm.pid

@@ -5,6 +5,7 @@ RUN apt-get update -y && apt-get install -y \
     php-fpm \
     php-mysqli
 
+ARG WP_DOMAIN
 COPY tools/pre-configure.sh /pre-configure.sh
 RUN /pre-configure.sh
 

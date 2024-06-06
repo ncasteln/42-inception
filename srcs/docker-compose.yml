@@ -4,7 +4,8 @@ services:
   nginx:
     image: nginx
     container_name: nginx
-    build: ./requirements/nginx
+    build:
+      context: ./requirements/nginx
     volumes:
       - wp_nginx_vol:/var/www/html
     ports:
@@ -20,7 +21,10 @@ services:
   wordpress:
     image: wordpress
     container_name: wordpress
-    build: ./requirements/wordpress
+    build:
+      context: ./requirements/wordpress
+      args:
+        WP_DOMAIN: ${WP_DOMAIN}
     volumes:
       - wp_nginx_vol:/var/www/html
     depends_on:
@@ -29,13 +33,13 @@ services:
     networks:
       - nginx_wordpress_net
       - mariadb_wordpress_net
-    secrets:
-      - wordpress_secrets
     environment:
-      WP_SECRETS: /run/secrets/wordpress_secrets
-      WP_DOMAIN: ncasteln.42.fr
+      WP_DOMAIN: ${WP_DOMAIN}
+      WP_SECRETS: ${WP_SECRETS}
+    secrets:
+      - wp_secrets
     healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/ncasteln.42.fr/public_html"]
+      test: ["CMD-SHELL", "wp core is-installed --path=/var/www/html/${WP_DOMAIN}/public_html"]
       start_period: 7s
       interval: 2s
       timeout: 5s
@@ -46,15 +50,16 @@ services:
   mariadb:
     image: mariadb
     container_name: mariadb
-    build: ./requirements/mariadb
+    build:
+      context: ./requirements/mariadb
     volumes:
       - mariadb_vol:/var/lib/mysql
     networks:
       - mariadb_wordpress_net
-    secrets:
-      - mariadb_secrets
     environment:
-      MARIADB_SECRETS: /run/secrets/mariadb_secrets
+      DB_SECRETS: /run/secrets/db_secrets
+    secrets:
+      - db_secrets
     healthcheck:
       test: [ "CMD-SHELL", "mysqladmin ping" ]
       start_period: 7s
@@ -67,16 +72,16 @@ services:
 volumes:
   wp_nginx_vol:
     name: wp_nginx_vol
-    driver_opts:
-      type: volume
-      o: bind
-      device: /home/ncasteln/data/wp_data
+    # driver_opts:
+    #   type: volume
+    #   o: bind
+    #   device: ${WP_DATA}
   mariadb_vol:
     name: mariadb_vol
-    driver_opts:
-      type: volume
-      o: bind
-      device: /home/ncasteln/data/db_data
+    # driver_opts:
+    #   type: volume
+    #   o: bind
+    #   device: ${DB_DATA}
 
 networks:
   nginx_wordpress_net:
@@ -85,7 +90,7 @@ networks:
     name: inception_backend
 
 secrets:
-  wordpress_secrets:
-    file: ../secrets/wordpress/.env
-  mariadb_secrets:
-    file: ../secrets/mariadb/.env
+  wp_secrets:
+    file: ../secrets/wordpress/.env #customize
+  db_secrets:
+    file: ../secrets/mariadb/.env #customize

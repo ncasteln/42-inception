@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/04 08:42:51 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/06 13:21:43 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,15 +15,23 @@
 # find . -type d | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 # find . -type f | grep -v .git | awk '{print $1"/"}' | git check-ignore -v --stdin
 
-DATA_FOLDER			=	/home/ncasteln
 NGINX_DIR			=	./srcs/requirements/nginx
 MARIADB_DIR			=	./srcs/requirements/mariadb
 WP_DIR				=	./srcs/requirements/wordpress
 
 # --------------------------------------------------------------------- COMPOSE
-up: check secrets volumes build
+up: env folders credentials build
 	@echo "$(G)* Creating containers...$(W)";
 	cd ./srcs/ && docker compose up
+
+env:
+	@./tools/create-env.sh
+
+folders:
+	@./tools/create-folders.sh || exit 1;
+
+credentials:
+	@./tools/create-credentials.sh
 
 build:
 	@echo "$(G)* Building the images of each service...$(W)";
@@ -33,22 +41,16 @@ down:
 	@echo "$(G)* Removing containers...$(W)";
 	cd ./srcs/ && docker compose down;
 
-volumes:
-	@./create-folders.sh $(DATA_FOLDER)
-
-secrets:
-	@./create-credentials.sh
-
-check:
-	@echo "$(Y)* Before running inception, consider the followings: ";
-	@echo "$(W)- The default user under which inception will be run is $(B)ncasteln$(W), \
-	If you want to change it you have to do it manually";
-	@echo "- To run inception 2 volumes are needed. A script will do it for you and create them \
-	under $(B)$(DATA_FOLDER)/data/$(W). If you want to change it you have to do it manually";
-	@echo "- To run it alo 2 files which hold the $(B)credentials$(W) are necessary. A script \
-	will help you to create them. Obviously this is just for learning pourpose.";
-	@echo "- To see the wordpress correctly page you need to change the $(B)/etc/hosts$(W) file";
-	@echo "$(Y)Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
+# check:
+# 	@echo "$(Y)* Before running inception, consider the followings: ";
+# 	@echo "$(W)- The default user under which inception will be run is $(B)ncasteln$(W), \
+# 	If you want to change it you have to do it manually";
+# 	@echo "- To run inception 2 volumes are needed. A script will do it for you and create them \
+# 	under $(B)$(DATA_FOLDER)/data/$(W). If you want to change it you have to do it manually";
+# 	@echo "- To run it alo 2 files which hold the $(B)credentials$(W) are necessary. A script \
+# 	will help you to create them. Obviously this is just for learning pourpose.";
+# 	@echo "- To see the wordpress correctly page you need to change the $(B)/etc/hosts$(W) file";
+# 	@echo "$(Y)Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -127,8 +129,11 @@ clean-net:
 		echo "$(N)* No custom networks to remove$(W)"; \
 	fi
 
-fclean: stop clean clean-img clean-vol clean-net
-	@rm -rfd $(DATA_FOLDER)/data/
+clean-data: #remove folders, .env and secrets
+	@./tools/clean-data.sh
+	@rm -rf clean
+
+fclean: stop clean clean-img clean-vol clean-net clean-data
 
 reset: fclean
 	docker system prune;
@@ -174,4 +179,4 @@ SEP	=	"------------------------------------------------------------------"
 
 .PHONY: nginx nginx-cont stop clean clean-img fclean display \
 mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down check \
-volumes reset secrets
+reset secrets clean-data env folders credentials

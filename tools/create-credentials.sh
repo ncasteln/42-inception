@@ -4,7 +4,10 @@ G="\033[0;32m";
 R="\033[0;31m"
 W="\033[0m";
 
-if [[ -f ./secrets/mariadb/.env || -f ./secrets/mariadb/.env ]]; then
+MARIADB_SECRET_FOLDER=./secrets/mariadb
+WORDPRESS_SECRET_FOLDER=./secrets/wordpress
+
+if [[ -f "$WORDPRESS_SECRET_FOLDER/.env" || -f "$MARIADB_SECRET_FOLDER/.env" ]]; then
 	echo -en "${G}* Credentials already exist, do you want to reset them?${W} " && read -p "[y/n] " ANSWER
 	if [ "$ANSWER" != "y" ]; then
 		exit 0;
@@ -60,8 +63,6 @@ do
     fi
 done;
 
-MARIADB_SECRET_FOLDER=./secrets/mariadb
-WORDPRESS_SECRET_FOLDER=./secrets/wordpress
 mkdir -p "$MARIADB_SECRET_FOLDER" "$WORDPRESS_SECRET_FOLDER"
 
 echo -e "\
@@ -78,3 +79,5 @@ DB_HOST=mariadb:3306\n\
 ADMIN_USER=$ADMIN_USER\n\
 ADMIN_PASSWORD=$ADMIN_PASSWORD\n\
 ADMIN_EMAIL=$ADMIN_USER@my-company.com" > $WORDPRESS_SECRET_FOLDER/.env;
+
+echo "./secrets" >> ./tools/clean;

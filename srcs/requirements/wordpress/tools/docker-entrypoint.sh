@@ -12,8 +12,8 @@ if wp core is-installed --path="$WP_PATH" > /dev/null 2>&1; then
   exec $@;
 fi
 
-echo -e "${P}*** [INCEPTION] Installing wordpress ***${W}"
-wp core download --path="$WP_PATH"
+echo -e "${P}*** [INCEPTION] Installing wordpress ***${W}";
+wp core download --path="$WP_PATH";
 
 # variable are in /run/secrets/wordpress_secrets
 DB_NAME=$(cat "${WP_SECRETS}" | grep 'DB_NAME' | awk -F '=' '{ print $2 }')

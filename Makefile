@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/06 13:21:43 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/06 15:22:00 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,17 +40,6 @@ build:
 down:
 	@echo "$(G)* Removing containers...$(W)";
 	cd ./srcs/ && docker compose down;
-
-# check:
-# 	@echo "$(Y)* Before running inception, consider the followings: ";
-# 	@echo "$(W)- The default user under which inception will be run is $(B)ncasteln$(W), \
-# 	If you want to change it you have to do it manually";
-# 	@echo "- To run inception 2 volumes are needed. A script will do it for you and create them \
-# 	under $(B)$(DATA_FOLDER)/data/$(W). If you want to change it you have to do it manually";
-# 	@echo "- To run it alo 2 files which hold the $(B)credentials$(W) are necessary. A script \
-# 	will help you to create them. Obviously this is just for learning pourpose.";
-# 	@echo "- To see the wordpress correctly page you need to change the $(B)/etc/hosts$(W) file";
-# 	@echo "$(Y)Do you want to continue to make inception? $(W)[y/N] " && read ANSWER && [ $${ANSWER:-N} = y ];
 
 # ----------------------------------------------------------------------- NGINX
 nginx:
@@ -131,7 +120,7 @@ clean-net:
 
 clean-data: #remove folders, .env and secrets
 	@./tools/clean-data.sh
-	@rm -rf clean
+	@rm -rf ./tools/clean
 
 fclean: stop clean clean-img clean-vol clean-net clean-data
 
@@ -175,8 +164,7 @@ B	=	\033[0;34m
 R	=	\033[0;31m
 W	=	\033[0m
 N	=	\033[1;30m
-SEP	=	"------------------------------------------------------------------"
 
-.PHONY: nginx nginx-cont stop clean clean-img fclean display \
-mariadb mariadb-cont wp wp-cont clean-net clean-vol build up down check \
-reset secrets clean-data env folders credentials
+.PHONY: nginx nginx-cont stop clean clean-img fclean display mariadb \
+mariadb-cont wp wp-cont clean-net clean-vol build up down reset secrets \
+clean-data env folders credentials

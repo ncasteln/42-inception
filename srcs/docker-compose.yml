@@ -72,16 +72,16 @@ services:
 volumes:
   wp_nginx_vol:
     name: wp_nginx_vol
-    # driver_opts:
-    #   type: volume
-    #   o: bind
-    #   device: ${WP_DATA}
+    driver_opts:
+      type: volume
+      o: bind
+      device: ${WP_DATA}
   mariadb_vol:
     name: mariadb_vol
-    # driver_opts:
-    #   type: volume
-    #   o: bind
-    #   device: ${DB_DATA}
+    driver_opts:
+      type: volume
+      o: bind
+      device: ${DB_DATA}
 
 networks:
   nginx_wordpress_net:
@@ -91,6 +91,6 @@ networks:
 
 secrets:
   wp_secrets:
-    file: ../secrets/wordpress/.env #customize
+    file: ../secrets/wordpress/.env
   db_secrets:
-    file: ../secrets/mariadb/.env #customize
+    file: ../secrets/mariadb/.env

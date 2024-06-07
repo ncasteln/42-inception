@@ -6,7 +6,7 @@
 #    By: ncasteln <ncasteln@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/03 11:37:43 by ncasteln          #+#    #+#              #
-#    Updated: 2024/06/06 15:22:00 by ncasteln         ###   ########.fr        #
+#    Updated: 2024/06/07 10:07:08 by ncasteln         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,7 +124,7 @@ clean-data: #remove folders, .env and secrets
 
 fclean: stop clean clean-img clean-vol clean-net clean-data
 
-reset: fclean
+reset: fclean #reuires sudo privileges
 	docker system prune;
 	systemctl restart docker;
 
